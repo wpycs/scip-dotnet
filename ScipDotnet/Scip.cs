@@ -9,19 +9,23 @@ using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
 using scg = global::System.Collections.Generic;
-namespace Scip {
+namespace Scip
+{
 
   /// <summary>Holder for reflection information generated from scip.proto</summary>
-  public static partial class ScipReflection {
+  public static partial class ScipReflection
+  {
 
     #region Descriptor
     /// <summary>File descriptor for scip.proto</summary>
-    public static pbr::FileDescriptor Descriptor {
+    public static pbr::FileDescriptor Descriptor
+    {
       get { return descriptor; }
     }
     private static pbr::FileDescriptor descriptor;
 
-    static ScipReflection() {
+    static ScipReflection()
+    {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CgpzY2lwLnByb3RvEgRzY2lwIn8KBUluZGV4EiAKCG1ldGFkYXRhGAEgASgL",
@@ -114,7 +118,7 @@ namespace Scip {
             "dXJjZWdyYXBoL3NjaXAvYmluZGluZ3MvZ28vc2NpcC9iBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Scip.ProtocolVersion), typeof(global::Scip.TextEncoding), typeof(global::Scip.SymbolRole), typeof(global::Scip.SyntaxKind), typeof(global::Scip.Severity), typeof(global::Scip.DiagnosticTag), typeof(global::Scip.Language), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] { typeof(global::Scip.ProtocolVersion), typeof(global::Scip.TextEncoding), typeof(global::Scip.SymbolRole), typeof(global::Scip.SyntaxKind), typeof(global::Scip.Severity), typeof(global::Scip.DiagnosticTag), typeof(global::Scip.Language), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Scip.Index), global::Scip.Index.Parser, new[]{ "Metadata", "Documents", "ExternalSymbols" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Scip.Metadata), global::Scip.Metadata.Parser, new[]{ "Version", "ToolInfo", "ProjectRoot", "TextDocumentEncoding" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Scip.ToolInfo), global::Scip.ToolInfo.Parser, new[]{ "Name", "Version", "Arguments" }, null, null, null, null),
@@ -132,11 +136,13 @@ namespace Scip {
 
   }
   #region Enums
-  public enum ProtocolVersion {
+  public enum ProtocolVersion
+  {
     [pbr::OriginalName("UnspecifiedProtocolVersion")] UnspecifiedProtocolVersion = 0,
   }
 
-  public enum TextEncoding {
+  public enum TextEncoding
+  {
     [pbr::OriginalName("UnspecifiedTextEncoding")] UnspecifiedTextEncoding = 0,
     [pbr::OriginalName("UTF8")] Utf8 = 1,
     [pbr::OriginalName("UTF16")] Utf16 = 2,
@@ -149,7 +155,8 @@ namespace Scip {
   /// enum value is defined. In pseudocode, this can be implemented with the
   /// logic: `const isImportRole = (role.value &amp; SymbolRole.Import.value) > 0`.
   /// </summary>
-  public enum SymbolRole {
+  public enum SymbolRole
+  {
     /// <summary>
     /// This case is not meant to be used; it only exists to avoid an error
     /// from the Protobuf code generator.
@@ -181,7 +188,8 @@ namespace Scip {
     [pbr::OriginalName("Test")] Test = 32,
   }
 
-  public enum SyntaxKind {
+  public enum SyntaxKind
+  {
     [pbr::OriginalName("UnspecifiedSyntaxKind")] UnspecifiedSyntaxKind = 0,
     /// <summary>
     /// Comment, including comment markers and text
@@ -334,7 +342,8 @@ namespace Scip {
     [pbr::OriginalName("TagDelimiter")] TagDelimiter = 36,
   }
 
-  public enum Severity {
+  public enum Severity
+  {
     [pbr::OriginalName("UnspecifiedSeverity")] UnspecifiedSeverity = 0,
     [pbr::OriginalName("Error")] Error = 1,
     [pbr::OriginalName("Warning")] Warning = 2,
@@ -342,7 +351,8 @@ namespace Scip {
     [pbr::OriginalName("Hint")] Hint = 4,
   }
 
-  public enum DiagnosticTag {
+  public enum DiagnosticTag
+  {
     [pbr::OriginalName("UnspecifiedDiagnosticTag")] UnspecifiedDiagnosticTag = 0,
     [pbr::OriginalName("Unnecessary")] Unnecessary = 1,
     [pbr::OriginalName("Deprecated")] Deprecated = 2,
@@ -356,7 +366,8 @@ namespace Scip {
   /// "CPlusPlus" in this enum and other names such as "cpp" are incompatible.
   /// Feel free to send a pull-request to add missing programming languages.
   /// </summary>
-  public enum Language {
+  public enum Language
+  {
     [pbr::OriginalName("UnspecifiedLanguage")] UnspecifiedLanguage = 0,
     [pbr::OriginalName("ABAP")] Abap = 60,
     [pbr::OriginalName("APL")] Apl = 49,
@@ -480,9 +491,9 @@ namespace Scip {
   /// once in the stream. Other field values may appear in any order.
   /// </summary>
   public sealed partial class Index : pb::IMessage<Index>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
-  #endif
+#endif
   {
     private static readonly pb::MessageParser<Index> _parser = new pb::MessageParser<Index>(() => new Index());
     private pb::UnknownFieldSet _unknownFields;
@@ -492,19 +503,22 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
+    public static pbr::MessageDescriptor Descriptor
+    {
       get { return global::Scip.ScipReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
+    pbr::MessageDescriptor pb::IMessage.Descriptor
+    {
       get { return Descriptor; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Index() {
+    public Index()
+    {
       OnConstruction();
     }
 
@@ -512,7 +526,8 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Index(Index other) : this() {
+    public Index(Index other) : this()
+    {
       metadata_ = other.metadata_ != null ? other.metadata_.Clone() : null;
       documents_ = other.documents_.Clone();
       externalSymbols_ = other.externalSymbols_.Clone();
@@ -521,7 +536,8 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Index Clone() {
+    public Index Clone()
+    {
       return new Index(this);
     }
 
@@ -533,9 +549,11 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Scip.Metadata Metadata {
+    public global::Scip.Metadata Metadata
+    {
       get { return metadata_; }
-      set {
+      set
+      {
         metadata_ = value;
       }
     }
@@ -550,7 +568,8 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Scip.Document> Documents {
+    public pbc::RepeatedField<global::Scip.Document> Documents
+    {
       get { return documents_; }
     }
 
@@ -568,39 +587,46 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Scip.SymbolInformation> ExternalSymbols {
+    public pbc::RepeatedField<global::Scip.SymbolInformation> ExternalSymbols
+    {
       get { return externalSymbols_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
+    public override bool Equals(object other)
+    {
       return Equals(other as Index);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(Index other) {
-      if (ReferenceEquals(other, null)) {
+    public bool Equals(Index other)
+    {
+      if (ReferenceEquals(other, null))
+      {
         return false;
       }
-      if (ReferenceEquals(other, this)) {
+      if (ReferenceEquals(other, this))
+      {
         return true;
       }
       if (!object.Equals(Metadata, other.Metadata)) return false;
-      if(!documents_.Equals(other.documents_)) return false;
-      if(!externalSymbols_.Equals(other.externalSymbols_)) return false;
+      if (!documents_.Equals(other.documents_)) return false;
+      if (!externalSymbols_.Equals(other.externalSymbols_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
+    public override int GetHashCode()
+    {
       int hash = 1;
       if (metadata_ != null) hash ^= Metadata.GetHashCode();
       hash ^= documents_.GetHashCode();
       hash ^= externalSymbols_.GetHashCode();
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         hash ^= _unknownFields.GetHashCode();
       }
       return hash;
@@ -608,16 +634,18 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
+    public override string ToString()
+    {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    public void WriteTo(pb::CodedOutputStream output)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
-    #else
+#else
       if (metadata_ != null) {
         output.WriteRawTag(10);
         output.WriteMessage(Metadata);
@@ -627,35 +655,41 @@ namespace Scip {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
+#endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (metadata_ != null) {
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output)
+    {
+      if (metadata_ != null)
+      {
         output.WriteRawTag(10);
         output.WriteMessage(Metadata);
       }
       documents_.WriteTo(ref output, _repeated_documents_codec);
       externalSymbols_.WriteTo(ref output, _repeated_externalSymbols_codec);
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         _unknownFields.WriteTo(ref output);
       }
     }
-    #endif
+#endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
+    public int CalculateSize()
+    {
       int size = 0;
-      if (metadata_ != null) {
+      if (metadata_ != null)
+      {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Metadata);
       }
       size += documents_.CalculateSize(_repeated_documents_codec);
       size += externalSymbols_.CalculateSize(_repeated_externalSymbols_codec);
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         size += _unknownFields.CalculateSize();
       }
       return size;
@@ -663,12 +697,16 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(Index other) {
-      if (other == null) {
+    public void MergeFrom(Index other)
+    {
+      if (other == null)
+      {
         return;
       }
-      if (other.metadata_ != null) {
-        if (metadata_ == null) {
+      if (other.metadata_ != null)
+      {
+        if (metadata_ == null)
+        {
           Metadata = new global::Scip.Metadata();
         }
         Metadata.MergeFrom(other.Metadata);
@@ -680,10 +718,11 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    public void MergeFrom(pb::CodedInputStream input)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       input.ReadRawMessage(this);
-    #else
+#else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -707,45 +746,52 @@ namespace Scip {
           }
         }
       }
-    #endif
+#endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input)
+    {
       uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      while ((tag = input.ReadTag()) != 0)
+      {
+        switch (tag)
+        {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 10: {
-            if (metadata_ == null) {
-              Metadata = new global::Scip.Metadata();
+          case 10:
+            {
+              if (metadata_ == null)
+              {
+                Metadata = new global::Scip.Metadata();
+              }
+              input.ReadMessage(Metadata);
+              break;
             }
-            input.ReadMessage(Metadata);
-            break;
-          }
-          case 18: {
-            documents_.AddEntriesFrom(ref input, _repeated_documents_codec);
-            break;
-          }
-          case 26: {
-            externalSymbols_.AddEntriesFrom(ref input, _repeated_externalSymbols_codec);
-            break;
-          }
+          case 18:
+            {
+              documents_.AddEntriesFrom(ref input, _repeated_documents_codec);
+              break;
+            }
+          case 26:
+            {
+              externalSymbols_.AddEntriesFrom(ref input, _repeated_externalSymbols_codec);
+              break;
+            }
         }
       }
     }
-    #endif
+#endif
 
   }
 
   public sealed partial class Metadata : pb::IMessage<Metadata>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
-  #endif
+#endif
   {
     private static readonly pb::MessageParser<Metadata> _parser = new pb::MessageParser<Metadata>(() => new Metadata());
     private pb::UnknownFieldSet _unknownFields;
@@ -755,19 +801,22 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
+    public static pbr::MessageDescriptor Descriptor
+    {
       get { return global::Scip.ScipReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
+    pbr::MessageDescriptor pb::IMessage.Descriptor
+    {
       get { return Descriptor; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Metadata() {
+    public Metadata()
+    {
       OnConstruction();
     }
 
@@ -775,7 +824,8 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Metadata(Metadata other) : this() {
+    public Metadata(Metadata other) : this()
+    {
       version_ = other.version_;
       toolInfo_ = other.toolInfo_ != null ? other.toolInfo_.Clone() : null;
       projectRoot_ = other.projectRoot_;
@@ -785,7 +835,8 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Metadata Clone() {
+    public Metadata Clone()
+    {
       return new Metadata(this);
     }
 
@@ -797,9 +848,11 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Scip.ProtocolVersion Version {
+    public global::Scip.ProtocolVersion Version
+    {
       get { return version_; }
-      set {
+      set
+      {
         version_ = value;
       }
     }
@@ -812,9 +865,11 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Scip.ToolInfo ToolInfo {
+    public global::Scip.ToolInfo ToolInfo
+    {
       get { return toolInfo_; }
-      set {
+      set
+      {
         toolInfo_ = value;
       }
     }
@@ -829,9 +884,11 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string ProjectRoot {
+    public string ProjectRoot
+    {
       get { return projectRoot_; }
-      set {
+      set
+      {
         projectRoot_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
@@ -845,26 +902,32 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Scip.TextEncoding TextDocumentEncoding {
+    public global::Scip.TextEncoding TextDocumentEncoding
+    {
       get { return textDocumentEncoding_; }
-      set {
+      set
+      {
         textDocumentEncoding_ = value;
       }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
+    public override bool Equals(object other)
+    {
       return Equals(other as Metadata);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(Metadata other) {
-      if (ReferenceEquals(other, null)) {
+    public bool Equals(Metadata other)
+    {
+      if (ReferenceEquals(other, null))
+      {
         return false;
       }
-      if (ReferenceEquals(other, this)) {
+      if (ReferenceEquals(other, this))
+      {
         return true;
       }
       if (Version != other.Version) return false;
@@ -876,13 +939,15 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
+    public override int GetHashCode()
+    {
       int hash = 1;
       if (Version != global::Scip.ProtocolVersion.UnspecifiedProtocolVersion) hash ^= Version.GetHashCode();
       if (toolInfo_ != null) hash ^= ToolInfo.GetHashCode();
       if (ProjectRoot.Length != 0) hash ^= ProjectRoot.GetHashCode();
       if (TextDocumentEncoding != global::Scip.TextEncoding.UnspecifiedTextEncoding) hash ^= TextDocumentEncoding.GetHashCode();
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         hash ^= _unknownFields.GetHashCode();
       }
       return hash;
@@ -890,16 +955,18 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
+    public override string ToString()
+    {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    public void WriteTo(pb::CodedOutputStream output)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
-    #else
+#else
       if (Version != global::Scip.ProtocolVersion.UnspecifiedProtocolVersion) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Version);
@@ -919,52 +986,64 @@ namespace Scip {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
+#endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Version != global::Scip.ProtocolVersion.UnspecifiedProtocolVersion) {
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output)
+    {
+      if (Version != global::Scip.ProtocolVersion.UnspecifiedProtocolVersion)
+      {
         output.WriteRawTag(8);
-        output.WriteEnum((int) Version);
+        output.WriteEnum((int)Version);
       }
-      if (toolInfo_ != null) {
+      if (toolInfo_ != null)
+      {
         output.WriteRawTag(18);
         output.WriteMessage(ToolInfo);
       }
-      if (ProjectRoot.Length != 0) {
+      if (ProjectRoot.Length != 0)
+      {
         output.WriteRawTag(26);
         output.WriteString(ProjectRoot);
       }
-      if (TextDocumentEncoding != global::Scip.TextEncoding.UnspecifiedTextEncoding) {
+      if (TextDocumentEncoding != global::Scip.TextEncoding.UnspecifiedTextEncoding)
+      {
         output.WriteRawTag(32);
-        output.WriteEnum((int) TextDocumentEncoding);
+        output.WriteEnum((int)TextDocumentEncoding);
       }
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         _unknownFields.WriteTo(ref output);
       }
     }
-    #endif
+#endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
+    public int CalculateSize()
+    {
       int size = 0;
-      if (Version != global::Scip.ProtocolVersion.UnspecifiedProtocolVersion) {
-        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Version);
+      if (Version != global::Scip.ProtocolVersion.UnspecifiedProtocolVersion)
+      {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int)Version);
       }
-      if (toolInfo_ != null) {
+      if (toolInfo_ != null)
+      {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(ToolInfo);
       }
-      if (ProjectRoot.Length != 0) {
+      if (ProjectRoot.Length != 0)
+      {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(ProjectRoot);
       }
-      if (TextDocumentEncoding != global::Scip.TextEncoding.UnspecifiedTextEncoding) {
-        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) TextDocumentEncoding);
+      if (TextDocumentEncoding != global::Scip.TextEncoding.UnspecifiedTextEncoding)
+      {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int)TextDocumentEncoding);
       }
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         size += _unknownFields.CalculateSize();
       }
       return size;
@@ -972,23 +1051,30 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(Metadata other) {
-      if (other == null) {
+    public void MergeFrom(Metadata other)
+    {
+      if (other == null)
+      {
         return;
       }
-      if (other.Version != global::Scip.ProtocolVersion.UnspecifiedProtocolVersion) {
+      if (other.Version != global::Scip.ProtocolVersion.UnspecifiedProtocolVersion)
+      {
         Version = other.Version;
       }
-      if (other.toolInfo_ != null) {
-        if (toolInfo_ == null) {
+      if (other.toolInfo_ != null)
+      {
+        if (toolInfo_ == null)
+        {
           ToolInfo = new global::Scip.ToolInfo();
         }
         ToolInfo.MergeFrom(other.ToolInfo);
       }
-      if (other.ProjectRoot.Length != 0) {
+      if (other.ProjectRoot.Length != 0)
+      {
         ProjectRoot = other.ProjectRoot;
       }
-      if (other.TextDocumentEncoding != global::Scip.TextEncoding.UnspecifiedTextEncoding) {
+      if (other.TextDocumentEncoding != global::Scip.TextEncoding.UnspecifiedTextEncoding)
+      {
         TextDocumentEncoding = other.TextDocumentEncoding;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -996,10 +1082,11 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    public void MergeFrom(pb::CodedInputStream input)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       input.ReadRawMessage(this);
-    #else
+#else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -1027,49 +1114,57 @@ namespace Scip {
           }
         }
       }
-    #endif
+#endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input)
+    {
       uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      while ((tag = input.ReadTag()) != 0)
+      {
+        switch (tag)
+        {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 8: {
-            Version = (global::Scip.ProtocolVersion) input.ReadEnum();
-            break;
-          }
-          case 18: {
-            if (toolInfo_ == null) {
-              ToolInfo = new global::Scip.ToolInfo();
+          case 8:
+            {
+              Version = (global::Scip.ProtocolVersion)input.ReadEnum();
+              break;
             }
-            input.ReadMessage(ToolInfo);
-            break;
-          }
-          case 26: {
-            ProjectRoot = input.ReadString();
-            break;
-          }
-          case 32: {
-            TextDocumentEncoding = (global::Scip.TextEncoding) input.ReadEnum();
-            break;
-          }
+          case 18:
+            {
+              if (toolInfo_ == null)
+              {
+                ToolInfo = new global::Scip.ToolInfo();
+              }
+              input.ReadMessage(ToolInfo);
+              break;
+            }
+          case 26:
+            {
+              ProjectRoot = input.ReadString();
+              break;
+            }
+          case 32:
+            {
+              TextDocumentEncoding = (global::Scip.TextEncoding)input.ReadEnum();
+              break;
+            }
         }
       }
     }
-    #endif
+#endif
 
   }
 
   public sealed partial class ToolInfo : pb::IMessage<ToolInfo>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
-  #endif
+#endif
   {
     private static readonly pb::MessageParser<ToolInfo> _parser = new pb::MessageParser<ToolInfo>(() => new ToolInfo());
     private pb::UnknownFieldSet _unknownFields;
@@ -1079,19 +1174,22 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
+    public static pbr::MessageDescriptor Descriptor
+    {
       get { return global::Scip.ScipReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
+    pbr::MessageDescriptor pb::IMessage.Descriptor
+    {
       get { return Descriptor; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ToolInfo() {
+    public ToolInfo()
+    {
       OnConstruction();
     }
 
@@ -1099,7 +1197,8 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ToolInfo(ToolInfo other) : this() {
+    public ToolInfo(ToolInfo other) : this()
+    {
       name_ = other.name_;
       version_ = other.version_;
       arguments_ = other.arguments_.Clone();
@@ -1108,7 +1207,8 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ToolInfo Clone() {
+    public ToolInfo Clone()
+    {
       return new ToolInfo(this);
     }
 
@@ -1120,9 +1220,11 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Name {
+    public string Name
+    {
       get { return name_; }
-      set {
+      set
+      {
         name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
@@ -1135,9 +1237,11 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Version {
+    public string Version
+    {
       get { return version_; }
-      set {
+      set
+      {
         version_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
@@ -1152,39 +1256,46 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<string> Arguments {
+    public pbc::RepeatedField<string> Arguments
+    {
       get { return arguments_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
+    public override bool Equals(object other)
+    {
       return Equals(other as ToolInfo);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(ToolInfo other) {
-      if (ReferenceEquals(other, null)) {
+    public bool Equals(ToolInfo other)
+    {
+      if (ReferenceEquals(other, null))
+      {
         return false;
       }
-      if (ReferenceEquals(other, this)) {
+      if (ReferenceEquals(other, this))
+      {
         return true;
       }
       if (Name != other.Name) return false;
       if (Version != other.Version) return false;
-      if(!arguments_.Equals(other.arguments_)) return false;
+      if (!arguments_.Equals(other.arguments_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
+    public override int GetHashCode()
+    {
       int hash = 1;
       if (Name.Length != 0) hash ^= Name.GetHashCode();
       if (Version.Length != 0) hash ^= Version.GetHashCode();
       hash ^= arguments_.GetHashCode();
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         hash ^= _unknownFields.GetHashCode();
       }
       return hash;
@@ -1192,16 +1303,18 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
+    public override string ToString()
+    {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    public void WriteTo(pb::CodedOutputStream output)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
-    #else
+#else
       if (Name.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(Name);
@@ -1214,40 +1327,48 @@ namespace Scip {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
+#endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Name.Length != 0) {
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output)
+    {
+      if (Name.Length != 0)
+      {
         output.WriteRawTag(10);
         output.WriteString(Name);
       }
-      if (Version.Length != 0) {
+      if (Version.Length != 0)
+      {
         output.WriteRawTag(18);
         output.WriteString(Version);
       }
       arguments_.WriteTo(ref output, _repeated_arguments_codec);
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         _unknownFields.WriteTo(ref output);
       }
     }
-    #endif
+#endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
+    public int CalculateSize()
+    {
       int size = 0;
-      if (Name.Length != 0) {
+      if (Name.Length != 0)
+      {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
       }
-      if (Version.Length != 0) {
+      if (Version.Length != 0)
+      {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Version);
       }
       size += arguments_.CalculateSize(_repeated_arguments_codec);
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         size += _unknownFields.CalculateSize();
       }
       return size;
@@ -1255,14 +1376,18 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(ToolInfo other) {
-      if (other == null) {
+    public void MergeFrom(ToolInfo other)
+    {
+      if (other == null)
+      {
         return;
       }
-      if (other.Name.Length != 0) {
+      if (other.Name.Length != 0)
+      {
         Name = other.Name;
       }
-      if (other.Version.Length != 0) {
+      if (other.Version.Length != 0)
+      {
         Version = other.Version;
       }
       arguments_.Add(other.arguments_);
@@ -1271,10 +1396,11 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    public void MergeFrom(pb::CodedInputStream input)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       input.ReadRawMessage(this);
-    #else
+#else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -1295,35 +1421,41 @@ namespace Scip {
           }
         }
       }
-    #endif
+#endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input)
+    {
       uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      while ((tag = input.ReadTag()) != 0)
+      {
+        switch (tag)
+        {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 10: {
-            Name = input.ReadString();
-            break;
-          }
-          case 18: {
-            Version = input.ReadString();
-            break;
-          }
-          case 26: {
-            arguments_.AddEntriesFrom(ref input, _repeated_arguments_codec);
-            break;
-          }
+          case 10:
+            {
+              Name = input.ReadString();
+              break;
+            }
+          case 18:
+            {
+              Version = input.ReadString();
+              break;
+            }
+          case 26:
+            {
+              arguments_.AddEntriesFrom(ref input, _repeated_arguments_codec);
+              break;
+            }
         }
       }
     }
-    #endif
+#endif
 
   }
 
@@ -1331,9 +1463,9 @@ namespace Scip {
   /// Document defines the metadata about a source file on disk.
   /// </summary>
   public sealed partial class Document : pb::IMessage<Document>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
-  #endif
+#endif
   {
     private static readonly pb::MessageParser<Document> _parser = new pb::MessageParser<Document>(() => new Document());
     private pb::UnknownFieldSet _unknownFields;
@@ -1343,19 +1475,22 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
+    public static pbr::MessageDescriptor Descriptor
+    {
       get { return global::Scip.ScipReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
+    pbr::MessageDescriptor pb::IMessage.Descriptor
+    {
       get { return Descriptor; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Document() {
+    public Document()
+    {
       OnConstruction();
     }
 
@@ -1363,7 +1498,8 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Document(Document other) : this() {
+    public Document(Document other) : this()
+    {
       language_ = other.language_;
       relativePath_ = other.relativePath_;
       occurrences_ = other.occurrences_.Clone();
@@ -1373,7 +1509,8 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Document Clone() {
+    public Document Clone()
+    {
       return new Document(this);
     }
 
@@ -1388,9 +1525,11 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Language {
+    public string Language
+    {
       get { return language_; }
-      set {
+      set
+      {
         language_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
@@ -1411,9 +1550,11 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string RelativePath {
+    public string RelativePath
+    {
       get { return relativePath_; }
-      set {
+      set
+      {
         relativePath_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
@@ -1428,7 +1569,8 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Scip.Occurrence> Occurrences {
+    public pbc::RepeatedField<global::Scip.Occurrence> Occurrences
+    {
       get { return occurrences_; }
     }
 
@@ -1446,41 +1588,48 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Scip.SymbolInformation> Symbols {
+    public pbc::RepeatedField<global::Scip.SymbolInformation> Symbols
+    {
       get { return symbols_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
+    public override bool Equals(object other)
+    {
       return Equals(other as Document);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(Document other) {
-      if (ReferenceEquals(other, null)) {
+    public bool Equals(Document other)
+    {
+      if (ReferenceEquals(other, null))
+      {
         return false;
       }
-      if (ReferenceEquals(other, this)) {
+      if (ReferenceEquals(other, this))
+      {
         return true;
       }
       if (Language != other.Language) return false;
       if (RelativePath != other.RelativePath) return false;
-      if(!occurrences_.Equals(other.occurrences_)) return false;
-      if(!symbols_.Equals(other.symbols_)) return false;
+      if (!occurrences_.Equals(other.occurrences_)) return false;
+      if (!symbols_.Equals(other.symbols_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
+    public override int GetHashCode()
+    {
       int hash = 1;
       if (Language.Length != 0) hash ^= Language.GetHashCode();
       if (RelativePath.Length != 0) hash ^= RelativePath.GetHashCode();
       hash ^= occurrences_.GetHashCode();
       hash ^= symbols_.GetHashCode();
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         hash ^= _unknownFields.GetHashCode();
       }
       return hash;
@@ -1488,16 +1637,18 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
+    public override string ToString()
+    {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    public void WriteTo(pb::CodedOutputStream output)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
-    #else
+#else
       if (RelativePath.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(RelativePath);
@@ -1511,42 +1662,50 @@ namespace Scip {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
+#endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (RelativePath.Length != 0) {
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output)
+    {
+      if (RelativePath.Length != 0)
+      {
         output.WriteRawTag(10);
         output.WriteString(RelativePath);
       }
       occurrences_.WriteTo(ref output, _repeated_occurrences_codec);
       symbols_.WriteTo(ref output, _repeated_symbols_codec);
-      if (Language.Length != 0) {
+      if (Language.Length != 0)
+      {
         output.WriteRawTag(34);
         output.WriteString(Language);
       }
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         _unknownFields.WriteTo(ref output);
       }
     }
-    #endif
+#endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
+    public int CalculateSize()
+    {
       int size = 0;
-      if (Language.Length != 0) {
+      if (Language.Length != 0)
+      {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Language);
       }
-      if (RelativePath.Length != 0) {
+      if (RelativePath.Length != 0)
+      {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(RelativePath);
       }
       size += occurrences_.CalculateSize(_repeated_occurrences_codec);
       size += symbols_.CalculateSize(_repeated_symbols_codec);
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         size += _unknownFields.CalculateSize();
       }
       return size;
@@ -1554,14 +1713,18 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(Document other) {
-      if (other == null) {
+    public void MergeFrom(Document other)
+    {
+      if (other == null)
+      {
         return;
       }
-      if (other.Language.Length != 0) {
+      if (other.Language.Length != 0)
+      {
         Language = other.Language;
       }
-      if (other.RelativePath.Length != 0) {
+      if (other.RelativePath.Length != 0)
+      {
         RelativePath = other.RelativePath;
       }
       occurrences_.Add(other.occurrences_);
@@ -1571,10 +1734,11 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    public void MergeFrom(pb::CodedInputStream input)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       input.ReadRawMessage(this);
-    #else
+#else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -1599,39 +1763,46 @@ namespace Scip {
           }
         }
       }
-    #endif
+#endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input)
+    {
       uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      while ((tag = input.ReadTag()) != 0)
+      {
+        switch (tag)
+        {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 10: {
-            RelativePath = input.ReadString();
-            break;
-          }
-          case 18: {
-            occurrences_.AddEntriesFrom(ref input, _repeated_occurrences_codec);
-            break;
-          }
-          case 26: {
-            symbols_.AddEntriesFrom(ref input, _repeated_symbols_codec);
-            break;
-          }
-          case 34: {
-            Language = input.ReadString();
-            break;
-          }
+          case 10:
+            {
+              RelativePath = input.ReadString();
+              break;
+            }
+          case 18:
+            {
+              occurrences_.AddEntriesFrom(ref input, _repeated_occurrences_codec);
+              break;
+            }
+          case 26:
+            {
+              symbols_.AddEntriesFrom(ref input, _repeated_symbols_codec);
+              break;
+            }
+          case 34:
+            {
+              Language = input.ReadString();
+              break;
+            }
         }
       }
     }
-    #endif
+#endif
 
   }
 
@@ -1674,9 +1845,9 @@ namespace Scip {
   /// the file and the node corresponding to the symbol.
   /// </summary>
   public sealed partial class Symbol : pb::IMessage<Symbol>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
-  #endif
+#endif
   {
     private static readonly pb::MessageParser<Symbol> _parser = new pb::MessageParser<Symbol>(() => new Symbol());
     private pb::UnknownFieldSet _unknownFields;
@@ -1686,19 +1857,22 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
+    public static pbr::MessageDescriptor Descriptor
+    {
       get { return global::Scip.ScipReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
+    pbr::MessageDescriptor pb::IMessage.Descriptor
+    {
       get { return Descriptor; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Symbol() {
+    public Symbol()
+    {
       OnConstruction();
     }
 
@@ -1706,7 +1880,8 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Symbol(Symbol other) : this() {
+    public Symbol(Symbol other) : this()
+    {
       scheme_ = other.scheme_;
       package_ = other.package_ != null ? other.package_.Clone() : null;
       descriptors_ = other.descriptors_.Clone();
@@ -1715,7 +1890,8 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Symbol Clone() {
+    public Symbol Clone()
+    {
       return new Symbol(this);
     }
 
@@ -1724,9 +1900,11 @@ namespace Scip {
     private string scheme_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Scheme {
+    public string Scheme
+    {
       get { return scheme_; }
-      set {
+      set
+      {
         scheme_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
@@ -1736,9 +1914,11 @@ namespace Scip {
     private global::Scip.Package package_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Scip.Package Package {
+    public global::Scip.Package Package
+    {
       get { return package_; }
-      set {
+      set
+      {
         package_ = value;
       }
     }
@@ -1750,39 +1930,46 @@ namespace Scip {
     private readonly pbc::RepeatedField<global::Scip.SymbolDescriptor> descriptors_ = new pbc::RepeatedField<global::Scip.SymbolDescriptor>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Scip.SymbolDescriptor> Descriptors {
+    public pbc::RepeatedField<global::Scip.SymbolDescriptor> Descriptors
+    {
       get { return descriptors_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
+    public override bool Equals(object other)
+    {
       return Equals(other as Symbol);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(Symbol other) {
-      if (ReferenceEquals(other, null)) {
+    public bool Equals(Symbol other)
+    {
+      if (ReferenceEquals(other, null))
+      {
         return false;
       }
-      if (ReferenceEquals(other, this)) {
+      if (ReferenceEquals(other, this))
+      {
         return true;
       }
       if (Scheme != other.Scheme) return false;
       if (!object.Equals(Package, other.Package)) return false;
-      if(!descriptors_.Equals(other.descriptors_)) return false;
+      if (!descriptors_.Equals(other.descriptors_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
+    public override int GetHashCode()
+    {
       int hash = 1;
       if (Scheme.Length != 0) hash ^= Scheme.GetHashCode();
       if (package_ != null) hash ^= Package.GetHashCode();
       hash ^= descriptors_.GetHashCode();
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         hash ^= _unknownFields.GetHashCode();
       }
       return hash;
@@ -1790,16 +1977,18 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
+    public override string ToString()
+    {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    public void WriteTo(pb::CodedOutputStream output)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
-    #else
+#else
       if (Scheme.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(Scheme);
@@ -1812,40 +2001,48 @@ namespace Scip {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
+#endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Scheme.Length != 0) {
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output)
+    {
+      if (Scheme.Length != 0)
+      {
         output.WriteRawTag(10);
         output.WriteString(Scheme);
       }
-      if (package_ != null) {
+      if (package_ != null)
+      {
         output.WriteRawTag(18);
         output.WriteMessage(Package);
       }
       descriptors_.WriteTo(ref output, _repeated_descriptors_codec);
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         _unknownFields.WriteTo(ref output);
       }
     }
-    #endif
+#endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
+    public int CalculateSize()
+    {
       int size = 0;
-      if (Scheme.Length != 0) {
+      if (Scheme.Length != 0)
+      {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Scheme);
       }
-      if (package_ != null) {
+      if (package_ != null)
+      {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Package);
       }
       size += descriptors_.CalculateSize(_repeated_descriptors_codec);
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         size += _unknownFields.CalculateSize();
       }
       return size;
@@ -1853,15 +2050,20 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(Symbol other) {
-      if (other == null) {
+    public void MergeFrom(Symbol other)
+    {
+      if (other == null)
+      {
         return;
       }
-      if (other.Scheme.Length != 0) {
+      if (other.Scheme.Length != 0)
+      {
         Scheme = other.Scheme;
       }
-      if (other.package_ != null) {
-        if (package_ == null) {
+      if (other.package_ != null)
+      {
+        if (package_ == null)
+        {
           Package = new global::Scip.Package();
         }
         Package.MergeFrom(other.Package);
@@ -1872,10 +2074,11 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    public void MergeFrom(pb::CodedInputStream input)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       input.ReadRawMessage(this);
-    #else
+#else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -1899,38 +2102,45 @@ namespace Scip {
           }
         }
       }
-    #endif
+#endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input)
+    {
       uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      while ((tag = input.ReadTag()) != 0)
+      {
+        switch (tag)
+        {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 10: {
-            Scheme = input.ReadString();
-            break;
-          }
-          case 18: {
-            if (package_ == null) {
-              Package = new global::Scip.Package();
+          case 10:
+            {
+              Scheme = input.ReadString();
+              break;
             }
-            input.ReadMessage(Package);
-            break;
-          }
-          case 26: {
-            descriptors_.AddEntriesFrom(ref input, _repeated_descriptors_codec);
-            break;
-          }
+          case 18:
+            {
+              if (package_ == null)
+              {
+                Package = new global::Scip.Package();
+              }
+              input.ReadMessage(Package);
+              break;
+            }
+          case 26:
+            {
+              descriptors_.AddEntriesFrom(ref input, _repeated_descriptors_codec);
+              break;
+            }
         }
       }
     }
-    #endif
+#endif
 
   }
 
@@ -1940,9 +2150,9 @@ namespace Scip {
   /// NOTE: This corresponds to a module in Go and JVM languages.
   /// </summary>
   public sealed partial class Package : pb::IMessage<Package>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
-  #endif
+#endif
   {
     private static readonly pb::MessageParser<Package> _parser = new pb::MessageParser<Package>(() => new Package());
     private pb::UnknownFieldSet _unknownFields;
@@ -1952,19 +2162,22 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
+    public static pbr::MessageDescriptor Descriptor
+    {
       get { return global::Scip.ScipReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
+    pbr::MessageDescriptor pb::IMessage.Descriptor
+    {
       get { return Descriptor; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Package() {
+    public Package()
+    {
       OnConstruction();
     }
 
@@ -1972,7 +2185,8 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Package(Package other) : this() {
+    public Package(Package other) : this()
+    {
       manager_ = other.manager_;
       name_ = other.name_;
       version_ = other.version_;
@@ -1981,7 +2195,8 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Package Clone() {
+    public Package Clone()
+    {
       return new Package(this);
     }
 
@@ -1990,9 +2205,11 @@ namespace Scip {
     private string manager_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Manager {
+    public string Manager
+    {
       get { return manager_; }
-      set {
+      set
+      {
         manager_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
@@ -2002,9 +2219,11 @@ namespace Scip {
     private string name_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Name {
+    public string Name
+    {
       get { return name_; }
-      set {
+      set
+      {
         name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
@@ -2014,26 +2233,32 @@ namespace Scip {
     private string version_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Version {
+    public string Version
+    {
       get { return version_; }
-      set {
+      set
+      {
         version_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
+    public override bool Equals(object other)
+    {
       return Equals(other as Package);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(Package other) {
-      if (ReferenceEquals(other, null)) {
+    public bool Equals(Package other)
+    {
+      if (ReferenceEquals(other, null))
+      {
         return false;
       }
-      if (ReferenceEquals(other, this)) {
+      if (ReferenceEquals(other, this))
+      {
         return true;
       }
       if (Manager != other.Manager) return false;
@@ -2044,12 +2269,14 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
+    public override int GetHashCode()
+    {
       int hash = 1;
       if (Manager.Length != 0) hash ^= Manager.GetHashCode();
       if (Name.Length != 0) hash ^= Name.GetHashCode();
       if (Version.Length != 0) hash ^= Version.GetHashCode();
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         hash ^= _unknownFields.GetHashCode();
       }
       return hash;
@@ -2057,16 +2284,18 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
+    public override string ToString()
+    {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    public void WriteTo(pb::CodedOutputStream output)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
-    #else
+#else
       if (Manager.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(Manager);
@@ -2082,45 +2311,55 @@ namespace Scip {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
+#endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Manager.Length != 0) {
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output)
+    {
+      if (Manager.Length != 0)
+      {
         output.WriteRawTag(10);
         output.WriteString(Manager);
       }
-      if (Name.Length != 0) {
+      if (Name.Length != 0)
+      {
         output.WriteRawTag(18);
         output.WriteString(Name);
       }
-      if (Version.Length != 0) {
+      if (Version.Length != 0)
+      {
         output.WriteRawTag(26);
         output.WriteString(Version);
       }
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         _unknownFields.WriteTo(ref output);
       }
     }
-    #endif
+#endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
+    public int CalculateSize()
+    {
       int size = 0;
-      if (Manager.Length != 0) {
+      if (Manager.Length != 0)
+      {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Manager);
       }
-      if (Name.Length != 0) {
+      if (Name.Length != 0)
+      {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
       }
-      if (Version.Length != 0) {
+      if (Version.Length != 0)
+      {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Version);
       }
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         size += _unknownFields.CalculateSize();
       }
       return size;
@@ -2128,17 +2367,22 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(Package other) {
-      if (other == null) {
+    public void MergeFrom(Package other)
+    {
+      if (other == null)
+      {
         return;
       }
-      if (other.Manager.Length != 0) {
+      if (other.Manager.Length != 0)
+      {
         Manager = other.Manager;
       }
-      if (other.Name.Length != 0) {
+      if (other.Name.Length != 0)
+      {
         Name = other.Name;
       }
-      if (other.Version.Length != 0) {
+      if (other.Version.Length != 0)
+      {
         Version = other.Version;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -2146,10 +2390,11 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    public void MergeFrom(pb::CodedInputStream input)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       input.ReadRawMessage(this);
-    #else
+#else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -2170,42 +2415,48 @@ namespace Scip {
           }
         }
       }
-    #endif
+#endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input)
+    {
       uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      while ((tag = input.ReadTag()) != 0)
+      {
+        switch (tag)
+        {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 10: {
-            Manager = input.ReadString();
-            break;
-          }
-          case 18: {
-            Name = input.ReadString();
-            break;
-          }
-          case 26: {
-            Version = input.ReadString();
-            break;
-          }
+          case 10:
+            {
+              Manager = input.ReadString();
+              break;
+            }
+          case 18:
+            {
+              Name = input.ReadString();
+              break;
+            }
+          case 26:
+            {
+              Version = input.ReadString();
+              break;
+            }
         }
       }
     }
-    #endif
+#endif
 
   }
 
   public sealed partial class SymbolDescriptor : pb::IMessage<SymbolDescriptor>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
-  #endif
+#endif
   {
     private static readonly pb::MessageParser<SymbolDescriptor> _parser = new pb::MessageParser<SymbolDescriptor>(() => new SymbolDescriptor());
     private pb::UnknownFieldSet _unknownFields;
@@ -2215,19 +2466,22 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
+    public static pbr::MessageDescriptor Descriptor
+    {
       get { return global::Scip.ScipReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
+    pbr::MessageDescriptor pb::IMessage.Descriptor
+    {
       get { return Descriptor; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public SymbolDescriptor() {
+    public SymbolDescriptor()
+    {
       OnConstruction();
     }
 
@@ -2235,7 +2489,8 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public SymbolDescriptor(SymbolDescriptor other) : this() {
+    public SymbolDescriptor(SymbolDescriptor other) : this()
+    {
       name_ = other.name_;
       disambiguator_ = other.disambiguator_;
       suffix_ = other.suffix_;
@@ -2244,7 +2499,8 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public SymbolDescriptor Clone() {
+    public SymbolDescriptor Clone()
+    {
       return new SymbolDescriptor(this);
     }
 
@@ -2253,9 +2509,11 @@ namespace Scip {
     private string name_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Name {
+    public string Name
+    {
       get { return name_; }
-      set {
+      set
+      {
         name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
@@ -2265,9 +2523,11 @@ namespace Scip {
     private string disambiguator_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Disambiguator {
+    public string Disambiguator
+    {
       get { return disambiguator_; }
-      set {
+      set
+      {
         disambiguator_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
@@ -2277,26 +2537,32 @@ namespace Scip {
     private global::Scip.SymbolDescriptor.Types.Suffix suffix_ = global::Scip.SymbolDescriptor.Types.Suffix.UnspecifiedSuffix;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Scip.SymbolDescriptor.Types.Suffix Suffix {
+    public global::Scip.SymbolDescriptor.Types.Suffix Suffix
+    {
       get { return suffix_; }
-      set {
+      set
+      {
         suffix_ = value;
       }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
+    public override bool Equals(object other)
+    {
       return Equals(other as SymbolDescriptor);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(SymbolDescriptor other) {
-      if (ReferenceEquals(other, null)) {
+    public bool Equals(SymbolDescriptor other)
+    {
+      if (ReferenceEquals(other, null))
+      {
         return false;
       }
-      if (ReferenceEquals(other, this)) {
+      if (ReferenceEquals(other, this))
+      {
         return true;
       }
       if (Name != other.Name) return false;
@@ -2307,12 +2573,14 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
+    public override int GetHashCode()
+    {
       int hash = 1;
       if (Name.Length != 0) hash ^= Name.GetHashCode();
       if (Disambiguator.Length != 0) hash ^= Disambiguator.GetHashCode();
       if (Suffix != global::Scip.SymbolDescriptor.Types.Suffix.UnspecifiedSuffix) hash ^= Suffix.GetHashCode();
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         hash ^= _unknownFields.GetHashCode();
       }
       return hash;
@@ -2320,16 +2588,18 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
+    public override string ToString()
+    {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    public void WriteTo(pb::CodedOutputStream output)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
-    #else
+#else
       if (Name.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(Name);
@@ -2345,45 +2615,55 @@ namespace Scip {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
+#endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Name.Length != 0) {
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output)
+    {
+      if (Name.Length != 0)
+      {
         output.WriteRawTag(10);
         output.WriteString(Name);
       }
-      if (Disambiguator.Length != 0) {
+      if (Disambiguator.Length != 0)
+      {
         output.WriteRawTag(18);
         output.WriteString(Disambiguator);
       }
-      if (Suffix != global::Scip.SymbolDescriptor.Types.Suffix.UnspecifiedSuffix) {
+      if (Suffix != global::Scip.SymbolDescriptor.Types.Suffix.UnspecifiedSuffix)
+      {
         output.WriteRawTag(24);
-        output.WriteEnum((int) Suffix);
+        output.WriteEnum((int)Suffix);
       }
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         _unknownFields.WriteTo(ref output);
       }
     }
-    #endif
+#endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
+    public int CalculateSize()
+    {
       int size = 0;
-      if (Name.Length != 0) {
+      if (Name.Length != 0)
+      {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
       }
-      if (Disambiguator.Length != 0) {
+      if (Disambiguator.Length != 0)
+      {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Disambiguator);
       }
-      if (Suffix != global::Scip.SymbolDescriptor.Types.Suffix.UnspecifiedSuffix) {
-        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Suffix);
+      if (Suffix != global::Scip.SymbolDescriptor.Types.Suffix.UnspecifiedSuffix)
+      {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int)Suffix);
       }
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         size += _unknownFields.CalculateSize();
       }
       return size;
@@ -2391,17 +2671,22 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(SymbolDescriptor other) {
-      if (other == null) {
+    public void MergeFrom(SymbolDescriptor other)
+    {
+      if (other == null)
+      {
         return;
       }
-      if (other.Name.Length != 0) {
+      if (other.Name.Length != 0)
+      {
         Name = other.Name;
       }
-      if (other.Disambiguator.Length != 0) {
+      if (other.Disambiguator.Length != 0)
+      {
         Disambiguator = other.Disambiguator;
       }
-      if (other.Suffix != global::Scip.SymbolDescriptor.Types.Suffix.UnspecifiedSuffix) {
+      if (other.Suffix != global::Scip.SymbolDescriptor.Types.Suffix.UnspecifiedSuffix)
+      {
         Suffix = other.Suffix;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -2409,10 +2694,11 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    public void MergeFrom(pb::CodedInputStream input)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       input.ReadRawMessage(this);
-    #else
+#else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -2433,42 +2719,50 @@ namespace Scip {
           }
         }
       }
-    #endif
+#endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input)
+    {
       uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      while ((tag = input.ReadTag()) != 0)
+      {
+        switch (tag)
+        {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 10: {
-            Name = input.ReadString();
-            break;
-          }
-          case 18: {
-            Disambiguator = input.ReadString();
-            break;
-          }
-          case 24: {
-            Suffix = (global::Scip.SymbolDescriptor.Types.Suffix) input.ReadEnum();
-            break;
-          }
+          case 10:
+            {
+              Name = input.ReadString();
+              break;
+            }
+          case 18:
+            {
+              Disambiguator = input.ReadString();
+              break;
+            }
+          case 24:
+            {
+              Suffix = (global::Scip.SymbolDescriptor.Types.Suffix)input.ReadEnum();
+              break;
+            }
         }
       }
     }
-    #endif
+#endif
 
     #region Nested types
     /// <summary>Container for nested types declared in the SymbolDescriptor message type.</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static partial class Types {
-      public enum Suffix {
+    public static partial class Types
+    {
+      public enum Suffix
+      {
         [pbr::OriginalName("UnspecifiedSuffix")] UnspecifiedSuffix = 0,
         /// <summary>
         /// Unit of code abstraction and/or namespacing.
@@ -2503,9 +2797,9 @@ namespace Scip {
   /// docstring or what package it's defined it.
   /// </summary>
   public sealed partial class SymbolInformation : pb::IMessage<SymbolInformation>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
-  #endif
+#endif
   {
     private static readonly pb::MessageParser<SymbolInformation> _parser = new pb::MessageParser<SymbolInformation>(() => new SymbolInformation());
     private pb::UnknownFieldSet _unknownFields;
@@ -2515,19 +2809,22 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
+    public static pbr::MessageDescriptor Descriptor
+    {
       get { return global::Scip.ScipReflection.Descriptor.MessageTypes[7]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
+    pbr::MessageDescriptor pb::IMessage.Descriptor
+    {
       get { return Descriptor; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public SymbolInformation() {
+    public SymbolInformation()
+    {
       OnConstruction();
     }
 
@@ -2535,7 +2832,8 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public SymbolInformation(SymbolInformation other) : this() {
+    public SymbolInformation(SymbolInformation other) : this()
+    {
       symbol_ = other.symbol_;
       documentation_ = other.documentation_.Clone();
       relationships_ = other.relationships_.Clone();
@@ -2544,7 +2842,8 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public SymbolInformation Clone() {
+    public SymbolInformation Clone()
+    {
       return new SymbolInformation(this);
     }
 
@@ -2557,9 +2856,11 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Symbol {
+    public string Symbol
+    {
       get { return symbol_; }
-      set {
+      set
+      {
         symbol_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
@@ -2577,7 +2878,8 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<string> Documentation {
+    public pbc::RepeatedField<string> Documentation
+    {
       get { return documentation_; }
     }
 
@@ -2591,39 +2893,46 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Scip.Relationship> Relationships {
+    public pbc::RepeatedField<global::Scip.Relationship> Relationships
+    {
       get { return relationships_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
+    public override bool Equals(object other)
+    {
       return Equals(other as SymbolInformation);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(SymbolInformation other) {
-      if (ReferenceEquals(other, null)) {
+    public bool Equals(SymbolInformation other)
+    {
+      if (ReferenceEquals(other, null))
+      {
         return false;
       }
-      if (ReferenceEquals(other, this)) {
+      if (ReferenceEquals(other, this))
+      {
         return true;
       }
       if (Symbol != other.Symbol) return false;
-      if(!documentation_.Equals(other.documentation_)) return false;
-      if(!relationships_.Equals(other.relationships_)) return false;
+      if (!documentation_.Equals(other.documentation_)) return false;
+      if (!relationships_.Equals(other.relationships_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
+    public override int GetHashCode()
+    {
       int hash = 1;
       if (Symbol.Length != 0) hash ^= Symbol.GetHashCode();
       hash ^= documentation_.GetHashCode();
       hash ^= relationships_.GetHashCode();
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         hash ^= _unknownFields.GetHashCode();
       }
       return hash;
@@ -2631,16 +2940,18 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
+    public override string ToString()
+    {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    public void WriteTo(pb::CodedOutputStream output)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
-    #else
+#else
       if (Symbol.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(Symbol);
@@ -2650,35 +2961,41 @@ namespace Scip {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
+#endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Symbol.Length != 0) {
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output)
+    {
+      if (Symbol.Length != 0)
+      {
         output.WriteRawTag(10);
         output.WriteString(Symbol);
       }
       documentation_.WriteTo(ref output, _repeated_documentation_codec);
       relationships_.WriteTo(ref output, _repeated_relationships_codec);
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         _unknownFields.WriteTo(ref output);
       }
     }
-    #endif
+#endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
+    public int CalculateSize()
+    {
       int size = 0;
-      if (Symbol.Length != 0) {
+      if (Symbol.Length != 0)
+      {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Symbol);
       }
       size += documentation_.CalculateSize(_repeated_documentation_codec);
       size += relationships_.CalculateSize(_repeated_relationships_codec);
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         size += _unknownFields.CalculateSize();
       }
       return size;
@@ -2686,11 +3003,14 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(SymbolInformation other) {
-      if (other == null) {
+    public void MergeFrom(SymbolInformation other)
+    {
+      if (other == null)
+      {
         return;
       }
-      if (other.Symbol.Length != 0) {
+      if (other.Symbol.Length != 0)
+      {
         Symbol = other.Symbol;
       }
       documentation_.Add(other.documentation_);
@@ -2700,10 +3020,11 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    public void MergeFrom(pb::CodedInputStream input)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       input.ReadRawMessage(this);
-    #else
+#else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -2724,42 +3045,48 @@ namespace Scip {
           }
         }
       }
-    #endif
+#endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input)
+    {
       uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      while ((tag = input.ReadTag()) != 0)
+      {
+        switch (tag)
+        {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 10: {
-            Symbol = input.ReadString();
-            break;
-          }
-          case 26: {
-            documentation_.AddEntriesFrom(ref input, _repeated_documentation_codec);
-            break;
-          }
-          case 34: {
-            relationships_.AddEntriesFrom(ref input, _repeated_relationships_codec);
-            break;
-          }
+          case 10:
+            {
+              Symbol = input.ReadString();
+              break;
+            }
+          case 26:
+            {
+              documentation_.AddEntriesFrom(ref input, _repeated_documentation_codec);
+              break;
+            }
+          case 34:
+            {
+              relationships_.AddEntriesFrom(ref input, _repeated_relationships_codec);
+              break;
+            }
         }
       }
     }
-    #endif
+#endif
 
   }
 
   public sealed partial class Relationship : pb::IMessage<Relationship>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
-  #endif
+#endif
   {
     private static readonly pb::MessageParser<Relationship> _parser = new pb::MessageParser<Relationship>(() => new Relationship());
     private pb::UnknownFieldSet _unknownFields;
@@ -2769,19 +3096,22 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
+    public static pbr::MessageDescriptor Descriptor
+    {
       get { return global::Scip.ScipReflection.Descriptor.MessageTypes[8]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
+    pbr::MessageDescriptor pb::IMessage.Descriptor
+    {
       get { return Descriptor; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Relationship() {
+    public Relationship()
+    {
       OnConstruction();
     }
 
@@ -2789,7 +3119,8 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Relationship(Relationship other) : this() {
+    public Relationship(Relationship other) : this()
+    {
       symbol_ = other.symbol_;
       isReference_ = other.isReference_;
       isImplementation_ = other.isImplementation_;
@@ -2800,7 +3131,8 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Relationship Clone() {
+    public Relationship Clone()
+    {
       return new Relationship(this);
     }
 
@@ -2809,9 +3141,11 @@ namespace Scip {
     private string symbol_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Symbol {
+    public string Symbol
+    {
       get { return symbol_; }
-      set {
+      set
+      {
         symbol_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
@@ -2847,9 +3181,11 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool IsReference {
+    public bool IsReference
+    {
       get { return isReference_; }
-      set {
+      set
+      {
         isReference_ = value;
       }
     }
@@ -2869,9 +3205,11 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool IsImplementation {
+    public bool IsImplementation
+    {
       get { return isImplementation_; }
-      set {
+      set
+      {
         isImplementation_ = value;
       }
     }
@@ -2884,9 +3222,11 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool IsTypeDefinition {
+    public bool IsTypeDefinition
+    {
       get { return isTypeDefinition_; }
-      set {
+      set
+      {
         isTypeDefinition_ = value;
       }
     }
@@ -2914,26 +3254,32 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool IsDefinition {
+    public bool IsDefinition
+    {
       get { return isDefinition_; }
-      set {
+      set
+      {
         isDefinition_ = value;
       }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
+    public override bool Equals(object other)
+    {
       return Equals(other as Relationship);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(Relationship other) {
-      if (ReferenceEquals(other, null)) {
+    public bool Equals(Relationship other)
+    {
+      if (ReferenceEquals(other, null))
+      {
         return false;
       }
-      if (ReferenceEquals(other, this)) {
+      if (ReferenceEquals(other, this))
+      {
         return true;
       }
       if (Symbol != other.Symbol) return false;
@@ -2946,14 +3292,16 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
+    public override int GetHashCode()
+    {
       int hash = 1;
       if (Symbol.Length != 0) hash ^= Symbol.GetHashCode();
       if (IsReference != false) hash ^= IsReference.GetHashCode();
       if (IsImplementation != false) hash ^= IsImplementation.GetHashCode();
       if (IsTypeDefinition != false) hash ^= IsTypeDefinition.GetHashCode();
       if (IsDefinition != false) hash ^= IsDefinition.GetHashCode();
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         hash ^= _unknownFields.GetHashCode();
       }
       return hash;
@@ -2961,16 +3309,18 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
+    public override string ToString()
+    {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    public void WriteTo(pb::CodedOutputStream output)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
-    #else
+#else
       if (Symbol.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(Symbol);
@@ -2994,59 +3344,73 @@ namespace Scip {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
+#endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Symbol.Length != 0) {
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output)
+    {
+      if (Symbol.Length != 0)
+      {
         output.WriteRawTag(10);
         output.WriteString(Symbol);
       }
-      if (IsReference != false) {
+      if (IsReference != false)
+      {
         output.WriteRawTag(16);
         output.WriteBool(IsReference);
       }
-      if (IsImplementation != false) {
+      if (IsImplementation != false)
+      {
         output.WriteRawTag(24);
         output.WriteBool(IsImplementation);
       }
-      if (IsTypeDefinition != false) {
+      if (IsTypeDefinition != false)
+      {
         output.WriteRawTag(32);
         output.WriteBool(IsTypeDefinition);
       }
-      if (IsDefinition != false) {
+      if (IsDefinition != false)
+      {
         output.WriteRawTag(40);
         output.WriteBool(IsDefinition);
       }
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         _unknownFields.WriteTo(ref output);
       }
     }
-    #endif
+#endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
+    public int CalculateSize()
+    {
       int size = 0;
-      if (Symbol.Length != 0) {
+      if (Symbol.Length != 0)
+      {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Symbol);
       }
-      if (IsReference != false) {
+      if (IsReference != false)
+      {
         size += 1 + 1;
       }
-      if (IsImplementation != false) {
+      if (IsImplementation != false)
+      {
         size += 1 + 1;
       }
-      if (IsTypeDefinition != false) {
+      if (IsTypeDefinition != false)
+      {
         size += 1 + 1;
       }
-      if (IsDefinition != false) {
+      if (IsDefinition != false)
+      {
         size += 1 + 1;
       }
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         size += _unknownFields.CalculateSize();
       }
       return size;
@@ -3054,23 +3418,30 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(Relationship other) {
-      if (other == null) {
+    public void MergeFrom(Relationship other)
+    {
+      if (other == null)
+      {
         return;
       }
-      if (other.Symbol.Length != 0) {
+      if (other.Symbol.Length != 0)
+      {
         Symbol = other.Symbol;
       }
-      if (other.IsReference != false) {
+      if (other.IsReference != false)
+      {
         IsReference = other.IsReference;
       }
-      if (other.IsImplementation != false) {
+      if (other.IsImplementation != false)
+      {
         IsImplementation = other.IsImplementation;
       }
-      if (other.IsTypeDefinition != false) {
+      if (other.IsTypeDefinition != false)
+      {
         IsTypeDefinition = other.IsTypeDefinition;
       }
-      if (other.IsDefinition != false) {
+      if (other.IsDefinition != false)
+      {
         IsDefinition = other.IsDefinition;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -3078,10 +3449,11 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    public void MergeFrom(pb::CodedInputStream input)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       input.ReadRawMessage(this);
-    #else
+#else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -3110,43 +3482,51 @@ namespace Scip {
           }
         }
       }
-    #endif
+#endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input)
+    {
       uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      while ((tag = input.ReadTag()) != 0)
+      {
+        switch (tag)
+        {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 10: {
-            Symbol = input.ReadString();
-            break;
-          }
-          case 16: {
-            IsReference = input.ReadBool();
-            break;
-          }
-          case 24: {
-            IsImplementation = input.ReadBool();
-            break;
-          }
-          case 32: {
-            IsTypeDefinition = input.ReadBool();
-            break;
-          }
-          case 40: {
-            IsDefinition = input.ReadBool();
-            break;
-          }
+          case 10:
+            {
+              Symbol = input.ReadString();
+              break;
+            }
+          case 16:
+            {
+              IsReference = input.ReadBool();
+              break;
+            }
+          case 24:
+            {
+              IsImplementation = input.ReadBool();
+              break;
+            }
+          case 32:
+            {
+              IsTypeDefinition = input.ReadBool();
+              break;
+            }
+          case 40:
+            {
+              IsDefinition = input.ReadBool();
+              break;
+            }
         }
       }
     }
-    #endif
+#endif
 
   }
 
@@ -3158,9 +3538,9 @@ namespace Scip {
   /// across occurrences into a single occurrence to reduce payload sizes.
   /// </summary>
   public sealed partial class Occurrence : pb::IMessage<Occurrence>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
-  #endif
+#endif
   {
     private static readonly pb::MessageParser<Occurrence> _parser = new pb::MessageParser<Occurrence>(() => new Occurrence());
     private pb::UnknownFieldSet _unknownFields;
@@ -3170,19 +3550,22 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
+    public static pbr::MessageDescriptor Descriptor
+    {
       get { return global::Scip.ScipReflection.Descriptor.MessageTypes[9]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
+    pbr::MessageDescriptor pb::IMessage.Descriptor
+    {
       get { return Descriptor; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Occurrence() {
+    public Occurrence()
+    {
       OnConstruction();
     }
 
@@ -3190,19 +3573,22 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Occurrence(Occurrence other) : this() {
+    public Occurrence(Occurrence other) : this()
+    {
       range_ = other.range_.Clone();
       symbol_ = other.symbol_;
       symbolRoles_ = other.symbolRoles_;
       overrideDocumentation_ = other.overrideDocumentation_.Clone();
       syntaxKind_ = other.syntaxKind_;
       diagnostics_ = other.diagnostics_.Clone();
+      enclosingRange_ = other.enclosingRange_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Occurrence Clone() {
+    public Occurrence Clone()
+    {
       return new Occurrence(this);
     }
 
@@ -3233,7 +3619,8 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<int> Range {
+    public pbc::RepeatedField<int> Range
+    {
       get { return range_; }
     }
 
@@ -3246,9 +3633,11 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Symbol {
+    public string Symbol
+    {
       get { return symbol_; }
-      set {
+      set
+      {
         symbol_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
@@ -3262,9 +3651,11 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int SymbolRoles {
+    public int SymbolRoles
+    {
       get { return symbolRoles_; }
-      set {
+      set
+      {
         symbolRoles_ = value;
       }
     }
@@ -3286,7 +3677,8 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<string> OverrideDocumentation {
+    public pbc::RepeatedField<string> OverrideDocumentation
+    {
       get { return overrideDocumentation_; }
     }
 
@@ -3298,9 +3690,11 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Scip.SyntaxKind SyntaxKind {
+    public global::Scip.SyntaxKind SyntaxKind
+    {
       get { return syntaxKind_; }
-      set {
+      set
+      {
         syntaxKind_ = value;
       }
     }
@@ -3315,37 +3709,60 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Scip.Diagnostic> Diagnostics {
+    public pbc::RepeatedField<global::Scip.Diagnostic> Diagnostics
+    {
       get { return diagnostics_; }
+    }
+
+    /// <summary>Field number for the "enclosing_range" field.</summary>
+    public const int EnclosingRangeFieldNumber = 7;
+    private static readonly pb::FieldCodec<int> _repeated_enclosingRange_codec
+        = pb::FieldCodec.ForInt32(58);
+    private readonly pbc::RepeatedField<int> enclosingRange_ = new pbc::RepeatedField<int>();
+    /// <summary>
+    /// (optional) Using the same encoding as the sibling `range` field, half-open
+    /// source range of the nearest non-trivial enclosing AST node.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<int> EnclosingRange
+    {
+      get { return enclosingRange_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
+    public override bool Equals(object other)
+    {
       return Equals(other as Occurrence);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(Occurrence other) {
-      if (ReferenceEquals(other, null)) {
+    public bool Equals(Occurrence other)
+    {
+      if (ReferenceEquals(other, null))
+      {
         return false;
       }
-      if (ReferenceEquals(other, this)) {
+      if (ReferenceEquals(other, this))
+      {
         return true;
       }
-      if(!range_.Equals(other.range_)) return false;
+      if (!range_.Equals(other.range_)) return false;
       if (Symbol != other.Symbol) return false;
       if (SymbolRoles != other.SymbolRoles) return false;
-      if(!overrideDocumentation_.Equals(other.overrideDocumentation_)) return false;
+      if (!overrideDocumentation_.Equals(other.overrideDocumentation_)) return false;
       if (SyntaxKind != other.SyntaxKind) return false;
-      if(!diagnostics_.Equals(other.diagnostics_)) return false;
+      if (!diagnostics_.Equals(other.diagnostics_)) return false;
+      if (!enclosingRange_.Equals(other.enclosingRange_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
+    public override int GetHashCode()
+    {
       int hash = 1;
       hash ^= range_.GetHashCode();
       if (Symbol.Length != 0) hash ^= Symbol.GetHashCode();
@@ -3353,7 +3770,9 @@ namespace Scip {
       hash ^= overrideDocumentation_.GetHashCode();
       if (SyntaxKind != global::Scip.SyntaxKind.UnspecifiedSyntaxKind) hash ^= SyntaxKind.GetHashCode();
       hash ^= diagnostics_.GetHashCode();
-      if (_unknownFields != null) {
+      hash ^= enclosingRange_.GetHashCode();
+      if (_unknownFields != null)
+      {
         hash ^= _unknownFields.GetHashCode();
       }
       return hash;
@@ -3361,16 +3780,18 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
+    public override string ToString()
+    {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    public void WriteTo(pb::CodedOutputStream output)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
-    #else
+#else
       range_.WriteTo(output, _repeated_range_codec);
       if (Symbol.Length != 0) {
         output.WriteRawTag(18);
@@ -3386,54 +3807,67 @@ namespace Scip {
         output.WriteEnum((int) SyntaxKind);
       }
       diagnostics_.WriteTo(output, _repeated_diagnostics_codec);
+      enclosingRange_.WriteTo(output, _repeated_enclosingRange_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
+#endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output)
+    {
       range_.WriteTo(ref output, _repeated_range_codec);
-      if (Symbol.Length != 0) {
+      if (Symbol.Length != 0)
+      {
         output.WriteRawTag(18);
         output.WriteString(Symbol);
       }
-      if (SymbolRoles != 0) {
+      if (SymbolRoles != 0)
+      {
         output.WriteRawTag(24);
         output.WriteInt32(SymbolRoles);
       }
       overrideDocumentation_.WriteTo(ref output, _repeated_overrideDocumentation_codec);
-      if (SyntaxKind != global::Scip.SyntaxKind.UnspecifiedSyntaxKind) {
+      if (SyntaxKind != global::Scip.SyntaxKind.UnspecifiedSyntaxKind)
+      {
         output.WriteRawTag(40);
-        output.WriteEnum((int) SyntaxKind);
+        output.WriteEnum((int)SyntaxKind);
       }
       diagnostics_.WriteTo(ref output, _repeated_diagnostics_codec);
-      if (_unknownFields != null) {
+      enclosingRange_.WriteTo(ref output, _repeated_enclosingRange_codec);
+      if (_unknownFields != null)
+      {
         _unknownFields.WriteTo(ref output);
       }
     }
-    #endif
+#endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
+    public int CalculateSize()
+    {
       int size = 0;
       size += range_.CalculateSize(_repeated_range_codec);
-      if (Symbol.Length != 0) {
+      if (Symbol.Length != 0)
+      {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Symbol);
       }
-      if (SymbolRoles != 0) {
+      if (SymbolRoles != 0)
+      {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(SymbolRoles);
       }
       size += overrideDocumentation_.CalculateSize(_repeated_overrideDocumentation_codec);
-      if (SyntaxKind != global::Scip.SyntaxKind.UnspecifiedSyntaxKind) {
-        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) SyntaxKind);
+      if (SyntaxKind != global::Scip.SyntaxKind.UnspecifiedSyntaxKind)
+      {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int)SyntaxKind);
       }
       size += diagnostics_.CalculateSize(_repeated_diagnostics_codec);
-      if (_unknownFields != null) {
+      size += enclosingRange_.CalculateSize(_repeated_enclosingRange_codec);
+      if (_unknownFields != null)
+      {
         size += _unknownFields.CalculateSize();
       }
       return size;
@@ -3441,31 +3875,38 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(Occurrence other) {
-      if (other == null) {
+    public void MergeFrom(Occurrence other)
+    {
+      if (other == null)
+      {
         return;
       }
       range_.Add(other.range_);
-      if (other.Symbol.Length != 0) {
+      if (other.Symbol.Length != 0)
+      {
         Symbol = other.Symbol;
       }
-      if (other.SymbolRoles != 0) {
+      if (other.SymbolRoles != 0)
+      {
         SymbolRoles = other.SymbolRoles;
       }
       overrideDocumentation_.Add(other.overrideDocumentation_);
-      if (other.SyntaxKind != global::Scip.SyntaxKind.UnspecifiedSyntaxKind) {
+      if (other.SyntaxKind != global::Scip.SyntaxKind.UnspecifiedSyntaxKind)
+      {
         SyntaxKind = other.SyntaxKind;
       }
       diagnostics_.Add(other.diagnostics_);
+      enclosingRange_.Add(other.enclosingRange_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    public void MergeFrom(pb::CodedInputStream input)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       input.ReadRawMessage(this);
-    #else
+#else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -3497,50 +3938,70 @@ namespace Scip {
             diagnostics_.AddEntriesFrom(input, _repeated_diagnostics_codec);
             break;
           }
+          case 58:
+          case 56: {
+            enclosingRange_.AddEntriesFrom(input, _repeated_enclosingRange_codec);
+            break;
+          }
         }
       }
-    #endif
+#endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input)
+    {
       uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      while ((tag = input.ReadTag()) != 0)
+      {
+        switch (tag)
+        {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10:
-          case 8: {
-            range_.AddEntriesFrom(ref input, _repeated_range_codec);
-            break;
-          }
-          case 18: {
-            Symbol = input.ReadString();
-            break;
-          }
-          case 24: {
-            SymbolRoles = input.ReadInt32();
-            break;
-          }
-          case 34: {
-            overrideDocumentation_.AddEntriesFrom(ref input, _repeated_overrideDocumentation_codec);
-            break;
-          }
-          case 40: {
-            SyntaxKind = (global::Scip.SyntaxKind) input.ReadEnum();
-            break;
-          }
-          case 50: {
-            diagnostics_.AddEntriesFrom(ref input, _repeated_diagnostics_codec);
-            break;
-          }
+          case 8:
+            {
+              range_.AddEntriesFrom(ref input, _repeated_range_codec);
+              break;
+            }
+          case 18:
+            {
+              Symbol = input.ReadString();
+              break;
+            }
+          case 24:
+            {
+              SymbolRoles = input.ReadInt32();
+              break;
+            }
+          case 34:
+            {
+              overrideDocumentation_.AddEntriesFrom(ref input, _repeated_overrideDocumentation_codec);
+              break;
+            }
+          case 40:
+            {
+              SyntaxKind = (global::Scip.SyntaxKind)input.ReadEnum();
+              break;
+            }
+          case 50:
+            {
+              diagnostics_.AddEntriesFrom(ref input, _repeated_diagnostics_codec);
+              break;
+            }
+          case 58:
+          case 56:
+            {
+              enclosingRange_.AddEntriesFrom(ref input, _repeated_enclosingRange_codec);
+              break;
+            }
         }
       }
     }
-    #endif
+#endif
 
   }
 
@@ -3549,9 +4010,9 @@ namespace Scip {
   /// reported for a document.
   /// </summary>
   public sealed partial class Diagnostic : pb::IMessage<Diagnostic>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
-  #endif
+#endif
   {
     private static readonly pb::MessageParser<Diagnostic> _parser = new pb::MessageParser<Diagnostic>(() => new Diagnostic());
     private pb::UnknownFieldSet _unknownFields;
@@ -3561,19 +4022,22 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
+    public static pbr::MessageDescriptor Descriptor
+    {
       get { return global::Scip.ScipReflection.Descriptor.MessageTypes[10]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
+    pbr::MessageDescriptor pb::IMessage.Descriptor
+    {
       get { return Descriptor; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Diagnostic() {
+    public Diagnostic()
+    {
       OnConstruction();
     }
 
@@ -3581,7 +4045,8 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Diagnostic(Diagnostic other) : this() {
+    public Diagnostic(Diagnostic other) : this()
+    {
       severity_ = other.severity_;
       code_ = other.code_;
       message_ = other.message_;
@@ -3592,7 +4057,8 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Diagnostic Clone() {
+    public Diagnostic Clone()
+    {
       return new Diagnostic(this);
     }
 
@@ -3604,9 +4070,11 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Scip.Severity Severity {
+    public global::Scip.Severity Severity
+    {
       get { return severity_; }
-      set {
+      set
+      {
         severity_ = value;
       }
     }
@@ -3619,9 +4087,11 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Code {
+    public string Code
+    {
       get { return code_; }
-      set {
+      set
+      {
         code_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
@@ -3634,9 +4104,11 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Message {
+    public string Message
+    {
       get { return message_; }
-      set {
+      set
+      {
         message_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
@@ -3650,9 +4122,11 @@ namespace Scip {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Source {
+    public string Source
+    {
       get { return source_; }
-      set {
+      set
+      {
         source_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
@@ -3660,47 +4134,54 @@ namespace Scip {
     /// <summary>Field number for the "tags" field.</summary>
     public const int TagsFieldNumber = 5;
     private static readonly pb::FieldCodec<global::Scip.DiagnosticTag> _repeated_tags_codec
-        = pb::FieldCodec.ForEnum(42, x => (int) x, x => (global::Scip.DiagnosticTag) x);
+        = pb::FieldCodec.ForEnum(42, x => (int)x, x => (global::Scip.DiagnosticTag)x);
     private readonly pbc::RepeatedField<global::Scip.DiagnosticTag> tags_ = new pbc::RepeatedField<global::Scip.DiagnosticTag>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Scip.DiagnosticTag> Tags {
+    public pbc::RepeatedField<global::Scip.DiagnosticTag> Tags
+    {
       get { return tags_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
+    public override bool Equals(object other)
+    {
       return Equals(other as Diagnostic);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(Diagnostic other) {
-      if (ReferenceEquals(other, null)) {
+    public bool Equals(Diagnostic other)
+    {
+      if (ReferenceEquals(other, null))
+      {
         return false;
       }
-      if (ReferenceEquals(other, this)) {
+      if (ReferenceEquals(other, this))
+      {
         return true;
       }
       if (Severity != other.Severity) return false;
       if (Code != other.Code) return false;
       if (Message != other.Message) return false;
       if (Source != other.Source) return false;
-      if(!tags_.Equals(other.tags_)) return false;
+      if (!tags_.Equals(other.tags_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
+    public override int GetHashCode()
+    {
       int hash = 1;
       if (Severity != global::Scip.Severity.UnspecifiedSeverity) hash ^= Severity.GetHashCode();
       if (Code.Length != 0) hash ^= Code.GetHashCode();
       if (Message.Length != 0) hash ^= Message.GetHashCode();
       if (Source.Length != 0) hash ^= Source.GetHashCode();
       hash ^= tags_.GetHashCode();
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         hash ^= _unknownFields.GetHashCode();
       }
       return hash;
@@ -3708,16 +4189,18 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
+    public override string ToString()
+    {
       return pb::JsonFormatter.ToDiagnosticString(this);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    public void WriteTo(pb::CodedOutputStream output)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
-    #else
+#else
       if (Severity != global::Scip.Severity.UnspecifiedSeverity) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Severity);
@@ -3738,54 +4221,66 @@ namespace Scip {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
+#endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Severity != global::Scip.Severity.UnspecifiedSeverity) {
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output)
+    {
+      if (Severity != global::Scip.Severity.UnspecifiedSeverity)
+      {
         output.WriteRawTag(8);
-        output.WriteEnum((int) Severity);
+        output.WriteEnum((int)Severity);
       }
-      if (Code.Length != 0) {
+      if (Code.Length != 0)
+      {
         output.WriteRawTag(18);
         output.WriteString(Code);
       }
-      if (Message.Length != 0) {
+      if (Message.Length != 0)
+      {
         output.WriteRawTag(26);
         output.WriteString(Message);
       }
-      if (Source.Length != 0) {
+      if (Source.Length != 0)
+      {
         output.WriteRawTag(34);
         output.WriteString(Source);
       }
       tags_.WriteTo(ref output, _repeated_tags_codec);
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         _unknownFields.WriteTo(ref output);
       }
     }
-    #endif
+#endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
+    public int CalculateSize()
+    {
       int size = 0;
-      if (Severity != global::Scip.Severity.UnspecifiedSeverity) {
-        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Severity);
+      if (Severity != global::Scip.Severity.UnspecifiedSeverity)
+      {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int)Severity);
       }
-      if (Code.Length != 0) {
+      if (Code.Length != 0)
+      {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Code);
       }
-      if (Message.Length != 0) {
+      if (Message.Length != 0)
+      {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
       }
-      if (Source.Length != 0) {
+      if (Source.Length != 0)
+      {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Source);
       }
       size += tags_.CalculateSize(_repeated_tags_codec);
-      if (_unknownFields != null) {
+      if (_unknownFields != null)
+      {
         size += _unknownFields.CalculateSize();
       }
       return size;
@@ -3793,20 +4288,26 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(Diagnostic other) {
-      if (other == null) {
+    public void MergeFrom(Diagnostic other)
+    {
+      if (other == null)
+      {
         return;
       }
-      if (other.Severity != global::Scip.Severity.UnspecifiedSeverity) {
+      if (other.Severity != global::Scip.Severity.UnspecifiedSeverity)
+      {
         Severity = other.Severity;
       }
-      if (other.Code.Length != 0) {
+      if (other.Code.Length != 0)
+      {
         Code = other.Code;
       }
-      if (other.Message.Length != 0) {
+      if (other.Message.Length != 0)
+      {
         Message = other.Message;
       }
-      if (other.Source.Length != 0) {
+      if (other.Source.Length != 0)
+      {
         Source = other.Source;
       }
       tags_.Add(other.tags_);
@@ -3815,10 +4316,11 @@ namespace Scip {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    public void MergeFrom(pb::CodedInputStream input)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       input.ReadRawMessage(this);
-    #else
+#else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -3848,44 +4350,52 @@ namespace Scip {
           }
         }
       }
-    #endif
+#endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input)
+    {
       uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      while ((tag = input.ReadTag()) != 0)
+      {
+        switch (tag)
+        {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 8: {
-            Severity = (global::Scip.Severity) input.ReadEnum();
-            break;
-          }
-          case 18: {
-            Code = input.ReadString();
-            break;
-          }
-          case 26: {
-            Message = input.ReadString();
-            break;
-          }
-          case 34: {
-            Source = input.ReadString();
-            break;
-          }
+          case 8:
+            {
+              Severity = (global::Scip.Severity)input.ReadEnum();
+              break;
+            }
+          case 18:
+            {
+              Code = input.ReadString();
+              break;
+            }
+          case 26:
+            {
+              Message = input.ReadString();
+              break;
+            }
+          case 34:
+            {
+              Source = input.ReadString();
+              break;
+            }
           case 42:
-          case 40: {
-            tags_.AddEntriesFrom(ref input, _repeated_tags_codec);
-            break;
-          }
+          case 40:
+            {
+              tags_.AddEntriesFrom(ref input, _repeated_tags_codec);
+              break;
+            }
         }
       }
     }
-    #endif
+#endif
 
   }
 

@@ -213,7 +213,7 @@ public class ScipDocumentIndexer
     private bool IsIgnoredRelationshipSymbol(string symbol) =>
         _isIgnoredRelationshipSymbol.Any(symbol.EndsWith);
 
-    public void VisitOccurrence(ISymbol? symbol, Location location, bool isDefinition)
+    public void VisitOccurrence(ISymbol? symbol, Location location, bool isDefinition, Location? enclosingLocation = null)
     {
         if (symbol == null)
         {
@@ -236,6 +236,14 @@ public class ScipDocumentIndexer
         foreach (var range in LocationToRange(location))
         {
             occurrence.Range.Add(range);
+        }
+
+        if (enclosingLocation != null)
+        {
+            foreach (var range in LocationToRange(enclosingLocation))
+            {
+                occurrence.EnclosingRange.Add(range);
+            }
         }
 
         if (!isDefinition) return;

@@ -30,97 +30,99 @@ public class ScipCSharpSyntaxWalker : CSharpSyntaxWalker
 
     public override void VisitClassDeclaration(ClassDeclarationSyntax node)
     {
-        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true);
+        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true, node.GetLocation());
         base.VisitClassDeclaration(node);
     }
 
     public override void VisitRecordDeclaration(RecordDeclarationSyntax node)
     {
-        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true);
+        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true, node.GetLocation());
         base.VisitRecordDeclaration(node);
     }
 
     public override void VisitEnumDeclaration(EnumDeclarationSyntax node)
     {
-        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true);
+        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true, node.GetLocation());
         base.VisitEnumDeclaration(node);
     }
 
     public override void VisitCatchDeclaration(CatchDeclarationSyntax node)
     {
-        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true);
+        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true, node.Parent?.GetLocation());
         base.VisitCatchDeclaration(node);
     }
 
     public override void VisitConstructorDeclaration(ConstructorDeclarationSyntax node)
     {
-        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true);
+        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true, node.GetLocation());
         base.VisitConstructorDeclaration(node);
     }
 
     public override void VisitDelegateDeclaration(DelegateDeclarationSyntax node)
     {
-        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true);
+        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true, node.GetLocation());
         base.VisitDelegateDeclaration(node);
     }
 
     public override void VisitDestructorDeclaration(DestructorDeclarationSyntax node)
     {
-        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true);
+        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true, node.GetLocation());
         base.VisitDestructorDeclaration(node);
     }
 
     public override void VisitEventDeclaration(EventDeclarationSyntax node)
     {
-        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true);
+        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true, node.GetLocation());
         base.VisitEventDeclaration(node);
     }
 
     public override void VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
     {
-        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true);
+        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true, node.GetLocation());
         base.VisitInterfaceDeclaration(node);
     }
 
     public override void VisitPropertyDeclaration(PropertyDeclarationSyntax node)
     {
-        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true);
+        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true, node.GetLocation());
         base.VisitPropertyDeclaration(node);
     }
 
     public override void VisitStructDeclaration(StructDeclarationSyntax node)
     {
-        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true);
+        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true, node.GetLocation());
         base.VisitStructDeclaration(node);
     }
 
     public override void VisitVariableDeclarator(VariableDeclaratorSyntax node)
     {
-        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true);
+        // Use the parent VariableDeclaration or its parent (e.g. FieldDeclaration/LocalDeclaration) as enclosing range
+        var enclosing = node.Parent?.Parent?.GetLocation() ?? node.Parent?.GetLocation();
+        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true, enclosing);
         base.VisitVariableDeclarator(node);
     }
 
     public override void VisitEnumMemberDeclaration(EnumMemberDeclarationSyntax node)
     {
-        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true);
+        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true, node.GetLocation());
         base.VisitEnumMemberDeclaration(node);
     }
 
     public override void VisitMethodDeclaration(MethodDeclarationSyntax node)
     {
-        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true);
+        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true, node.GetLocation());
         base.VisitMethodDeclaration(node);
     }
 
     public override void VisitLocalFunctionStatement(LocalFunctionStatementSyntax node)
     {
-        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true);
+        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true, node.GetLocation());
         base.VisitLocalFunctionStatement(node);
     }
 
     public override void VisitParameter(ParameterSyntax node)
     {
-        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true);
+        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true, node.GetLocation());
         base.VisitParameter(node);
     }
 
@@ -138,37 +140,37 @@ public class ScipCSharpSyntaxWalker : CSharpSyntaxWalker
 
     public override void VisitForEachStatement(ForEachStatementSyntax node)
     {
-        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true);
+        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true, node.GetLocation());
         base.VisitForEachStatement(node);
     }
 
     public override void VisitFromClause(FromClauseSyntax node)
     {
-        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true);
+        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true, node.GetLocation());
         base.VisitFromClause(node);
     }
 
     public override void VisitJoinClause(JoinClauseSyntax node)
     {
-        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true);
+        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true, node.GetLocation());
         base.VisitJoinClause(node);
     }
 
     public override void VisitJoinIntoClause(JoinIntoClauseSyntax node)
     {
-        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true);
+        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true, node.GetLocation());
         base.VisitJoinIntoClause(node);
     }
 
     public override void VisitLetClause(LetClauseSyntax node)
     {
-        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true);
+        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true, node.GetLocation());
         base.VisitLetClause(node);
     }
 
     public override void VisitQueryContinuation(QueryContinuationSyntax node)
     {
-        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true);
+        _scipDocumentIndexer.VisitOccurrence(_semanticModel.GetDeclaredSymbol(node), node.Identifier.GetLocation(), true, node.GetLocation());
         base.VisitQueryContinuation(node);
     }
 }
