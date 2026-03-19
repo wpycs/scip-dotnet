@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Elfie.Extensions;
 using Microsoft.CodeAnalysis.MSBuild;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileSystemGlobbing;
@@ -42,12 +43,14 @@ public class ScipProjectIndexer
         }
     }
 
-    public async IAsyncEnumerable<Scip.Document> IndexDocuments(IHost host, IndexCommandOptions options)
+    public async IAsyncEnumerable<Scip.Document> IndexDocuments(IHost host, IndexCommandOptions options,
+        [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         var indexedProjects = new HashSet<ProjectId>();
         foreach (var project in options.ProjectsFile)
         {
-            await foreach (var document in IndexProject(host, options, project, indexedProjects))
+            cancellationToken.ThrowIfCancellationRequested();
+            await foreach (var document in IndexProject(host, options, project, indexedProjects, cancellationToken))
             {
                 yield return document;
             }
@@ -57,7 +60,8 @@ public class ScipProjectIndexer
     private async IAsyncEnumerable<Scip.Document> IndexProject(IHost host,
                                                                IndexCommandOptions options,
                                                                FileInfo rootProject,
-                                                               HashSet<ProjectId> indexedProjects)
+                                                               HashSet<ProjectId> indexedProjects,
+                                                               [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         if (!options.SkipDotnetRestore)
         {
@@ -68,17 +72,20 @@ public class ScipProjectIndexer
             ? new[]
             {
                 await host.Services.GetRequiredService<MSBuildWorkspace>()
-                    .OpenProjectAsync(rootProject.FullName)
+                    .OpenProjectAsync(rootProject.FullName, cancellationToken: cancellationToken)
             }
             : (await host.Services.GetRequiredService<MSBuildWorkspace>()
-                .OpenSolutionAsync(rootProject.FullName)).Projects).ToList();
+                .OpenSolutionAsync(rootProject.FullName, cancellationToken: cancellationToken)).Projects).ToList();
 
 
         options.Logger.LogDebug($"Found {projects.Count()} projects");
-        var projectsPerProjFile = projects.GroupBy(x => x.FilePath);
+        var projectsPerProjFile = projects.GroupBy(x => x.FilePath).ToList();
+        var totalProjects = projectsPerProjFile.Count;
+        var projectIndex = 0;
         var framework = $"net{Environment.Version.Major}.0";
         foreach (var projectGroup in projectsPerProjFile)
         {
+            projectIndex++;
 
             // If the project was found by opening the solution, we need to find the project that matches the framework.
             // if we can' fall back to the first one. Without this, we will process the same document multiple times
@@ -100,14 +107,21 @@ public class ScipProjectIndexer
 
             indexedProjects.Add(project.Id);
 
+            var projectStopwatch = Stopwatch.StartNew();
+            options.Logger.LogInformation("Indexing project [{ProjectIndex}/{TotalProjects}]: {ProjectPath}",
+                projectIndex, totalProjects, project.FilePath);
+
             var globals = new Dictionary<ISymbol, ScipSymbol>(SymbolEqualityComparer.Default);
 
+            var documentCount = 0;
             options.Logger.LogDebug($"Found {project.Documents.Count()} documents in {projectGroup.Key}");
             foreach (var document in project.Documents)
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 if (options.Matcher.Match(options.WorkingDirectory.FullName, document.FilePath).HasMatches)
                 {
-                    yield return await IndexDocument(document, options, globals, project.Language);
+                    yield return await IndexDocument(document, options, globals, project.Language, cancellationToken);
+                    documentCount++;
                 }
                 else
                 {
@@ -116,13 +130,17 @@ public class ScipProjectIndexer
                         document.FilePath);
                 }
             }
+
+            options.Logger.LogInformation("Completed project [{ProjectIndex}/{TotalProjects}]: {ProjectPath} ({DocumentCount} documents, {Elapsed})",
+                projectIndex, totalProjects, project.FilePath, documentCount, projectStopwatch.Elapsed.ToFriendlyString());
         }
     }
 
     private async Task<Scip.Document> IndexDocument(Document document,
                                                     IndexCommandOptions options,
                                                     Dictionary<ISymbol, ScipSymbol> globals,
-                                                    string language)
+                                                    string language,
+                                                    CancellationToken cancellationToken = default)
     {
         Scip.Document doc = new()
         {
@@ -131,7 +149,7 @@ public class ScipProjectIndexer
                 ? null
                 : Path.GetRelativePath(options.WorkingDirectory.FullName, document.FilePath)
         };
-        var semanticModel = await document.GetSemanticModelAsync();
+        var semanticModel = await document.GetSemanticModelAsync(cancellationToken);
         if (semanticModel == null)
         {
             Logger.LogWarning(
@@ -141,7 +159,7 @@ public class ScipProjectIndexer
         else
         {
             var symbolFormatter = new ScipDocumentIndexer(doc, options, globals);
-            var root = await document.GetSyntaxRootAsync();
+            var root = await document.GetSyntaxRootAsync(cancellationToken);
             if (language == "C#")
             {
                 var walker = new ScipCSharpSyntaxWalker(symbolFormatter, semanticModel);

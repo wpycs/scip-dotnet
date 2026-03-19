@@ -82,6 +82,10 @@ public static class Program
     private static MSBuildWorkspace CreateWorkspace()
     {
         MSBuildLocator.RegisterDefaults();
-        return MSBuildWorkspace.Create();
+        var properties = new Dictionary<string, string>
+        {
+            { "SuppressTfmSupportBuildWarnings", "true" }
+        };
+        return MSBuildWorkspace.Create(properties);
     }
 }

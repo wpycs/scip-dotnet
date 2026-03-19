@@ -49,7 +49,17 @@ public static class IndexCommandHandler
             skipDotnetRestore,
             nugetConfigPath
         );
-        await ScipIndex(host, options);
+        var lifetime = host.Services.GetRequiredService<IHostApplicationLifetime>();
+        var cancellationToken = lifetime.ApplicationStopping;
+        try
+        {
+            await ScipIndex(host, options, cancellationToken);
+        }
+        catch (OperationCanceledException)
+        {
+            logger.LogWarning("Indexing was cancelled.");
+            return 1;
+        }
 
 
         // Log msbuild workspace diagnostic information after the index command finishes
@@ -83,34 +93,46 @@ public static class IndexCommandHandler
     private static FileInfo OutputFile(FileInfo workingDirectory, string output) =>
         Path.IsPathRooted(output) ? new FileInfo(output) : new FileInfo(Path.Join(workingDirectory.FullName, output));
 
-    private static async Task ScipIndex(IHost host, IndexCommandOptions options)
+    private static async Task ScipIndex(IHost host, IndexCommandOptions options, CancellationToken cancellationToken)
     {
         var stopwatch = Stopwatch.StartNew();
         var indexer = host.Services.GetRequiredService<ScipProjectIndexer>();
-        var index = new Scip.Index
+        var metadata = new Metadata
         {
-            Metadata = new Metadata
+            ProjectRoot = new Uri(new Uri("file://"), options.WorkingDirectory.FullName).ToString(),
+            ToolInfo = new ToolInfo
             {
-                ProjectRoot = new Uri(new Uri("file://"), options.WorkingDirectory.FullName).ToString(),
-                ToolInfo = new ToolInfo
-                {
-                    Name = "scip-dotnet",
-                    Version = "0.1.0-SNAPSHOT"
-                },
-                TextDocumentEncoding = TextEncoding.Utf8,
-            }
+                Name = "scip-dotnet",
+                Version = "0.1.0-SNAPSHOT"
+            },
+            TextDocumentEncoding = TextEncoding.Utf8,
         };
-        await foreach (var document in indexer.IndexDocuments(host, options))
+
+        var documentCount = 0;
+        using (var fileStream = File.Create(options.Output.FullName))
         {
-            index.Documents.Add(document);
+            var codedOutput = new CodedOutputStream(fileStream, leaveOpen: true);
+
+            // Write metadata field (field 1, length-delimited)
+            codedOutput.WriteTag(1, WireFormat.WireType.LengthDelimited);
+            codedOutput.WriteMessage(metadata);
+            codedOutput.Flush();
+
+            // Stream each document directly to disk (field 2, length-delimited)
+            await foreach (var document in indexer.IndexDocuments(host, options, cancellationToken))
+            {
+                codedOutput.WriteTag(2, WireFormat.WireType.LengthDelimited);
+                codedOutput.WriteMessage(document);
+                codedOutput.Flush();
+                documentCount++;
+            }
         }
 
-        if (index.Documents.Count <= 0)
+        if (documentCount <= 0)
         {
             options.Logger.LogWarning("Indexing finished without error but no documents were indexed.");
         }
 
-        await File.WriteAllBytesAsync(options.Output.FullName, index.ToByteArray());
         options.Logger.LogInformation("done: {OptionsOutput} {TimeElapsed}", options.Output,
             stopwatch.Elapsed.ToFriendlyString());
     }
