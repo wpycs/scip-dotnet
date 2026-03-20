@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using System.Security.Cryptography;
+using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Elfie.Extensions;
 using Microsoft.CodeAnalysis.MSBuild;
@@ -44,13 +46,15 @@ public class ScipProjectIndexer
     }
 
     public async IAsyncEnumerable<Scip.Document> IndexDocuments(IHost host, IndexCommandOptions options,
+        SqliteIndexWriter? writer = null,
+        HashSet<string>? allVisitedPaths = null,
         [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         var indexedProjects = new HashSet<ProjectId>();
         foreach (var project in options.ProjectsFile)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            await foreach (var document in IndexProject(host, options, project, indexedProjects, cancellationToken))
+            await foreach (var document in IndexProject(host, options, project, indexedProjects, writer, allVisitedPaths, cancellationToken))
             {
                 yield return document;
             }
@@ -61,6 +65,8 @@ public class ScipProjectIndexer
                                                                IndexCommandOptions options,
                                                                FileInfo rootProject,
                                                                HashSet<ProjectId> indexedProjects,
+                                                               SqliteIndexWriter? writer,
+                                                               HashSet<string>? allVisitedPaths,
                                                                [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         if (!options.SkipDotnetRestore)
@@ -114,14 +120,23 @@ public class ScipProjectIndexer
             var globals = new Dictionary<ISymbol, ScipSymbol>(SymbolEqualityComparer.Default);
 
             var documentCount = 0;
+            var skippedCount = 0;
             options.Logger.LogDebug($"Found {project.Documents.Count()} documents in {projectGroup.Key}");
             foreach (var document in project.Documents)
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 if (options.Matcher.Match(options.WorkingDirectory.FullName, document.FilePath).HasMatches)
                 {
-                    yield return await IndexDocument(document, options, globals, project.Language, cancellationToken);
-                    documentCount++;
+                    var result = await IndexDocument(document, options, globals, project.Language, writer, allVisitedPaths, cancellationToken);
+                    if (result != null)
+                    {
+                        yield return result;
+                        documentCount++;
+                    }
+                    else
+                    {
+                        skippedCount++;
+                    }
                 }
                 else
                 {
@@ -131,23 +146,42 @@ public class ScipProjectIndexer
                 }
             }
 
-            options.Logger.LogInformation("Completed project [{ProjectIndex}/{TotalProjects}]: {ProjectPath} ({DocumentCount} documents, {Elapsed})",
-                projectIndex, totalProjects, project.FilePath, documentCount, projectStopwatch.Elapsed.ToFriendlyString());
+            options.Logger.LogInformation("Completed project [{ProjectIndex}/{TotalProjects}]: {ProjectPath} ({DocumentCount} indexed, {SkippedCount} unchanged, {Elapsed})",
+                projectIndex, totalProjects, project.FilePath, documentCount, skippedCount, projectStopwatch.Elapsed.ToFriendlyString());
         }
     }
 
-    private async Task<Scip.Document> IndexDocument(Document document,
+    private async Task<Scip.Document?> IndexDocument(Document document,
                                                     IndexCommandOptions options,
                                                     Dictionary<ISymbol, ScipSymbol> globals,
                                                     string language,
+                                                    SqliteIndexWriter? writer,
+                                                    HashSet<string>? allVisitedPaths,
                                                     CancellationToken cancellationToken = default)
     {
+        var relativePath = document.FilePath == null
+            ? null
+            : Path.GetRelativePath(options.WorkingDirectory.FullName, document.FilePath);
+
+        // Incremental: check content hash before doing expensive Roslyn analysis
+        if (writer != null && relativePath != null)
+        {
+            allVisitedPaths?.Add(relativePath);
+            var sourceText = await document.GetTextAsync(cancellationToken);
+            var contentHash = ComputeHash(sourceText.ToString());
+            if (!writer.ShouldReindex(relativePath, contentHash))
+            {
+                writer.MarkSkipped();
+                return null; // unchanged, skip Roslyn analysis entirely
+            }
+            // File changed or new: purge old data before re-indexing
+            writer.PurgeDocument(relativePath);
+        }
+
         Scip.Document doc = new()
         {
             Language = language,
-            RelativePath = document.FilePath == null
-                ? null
-                : Path.GetRelativePath(options.WorkingDirectory.FullName, document.FilePath)
+            RelativePath = relativePath
         };
         var semanticModel = await document.GetSemanticModelAsync(cancellationToken);
         if (semanticModel == null)
@@ -172,6 +206,20 @@ public class ScipProjectIndexer
             }
         }
 
+        // After successful indexing, update the content hash
+        if (writer != null && relativePath != null)
+        {
+            var sourceText = await document.GetTextAsync(cancellationToken);
+            var contentHash = ComputeHash(sourceText.ToString());
+            writer.UpdateContentHash(relativePath, contentHash);
+        }
+
         return doc;
+    }
+
+    private static string ComputeHash(string content)
+    {
+        var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(content));
+        return Convert.ToHexString(bytes);
     }
 }

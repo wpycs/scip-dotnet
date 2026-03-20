@@ -23,7 +23,8 @@ public static class IndexCommandHandler
         int dotnetRestoreTimeout,
         bool skipDotnetRestore,
         FileInfo? nugetConfigPath,
-        string outputFormat
+        string outputFormat,
+        bool incremental
         )
     {
         var logger = host.Services.GetRequiredService<ILogger<IndexCommandOptions>>();
@@ -60,7 +61,7 @@ public static class IndexCommandHandler
                     ? OutputFile(workingDirectory, output)
                     : OutputFile(workingDirectory, Path.ChangeExtension(output, ".db"));
                 var sqliteOptions = options with { Output = sqliteOutput };
-                await SqliteIndex(host, sqliteOptions, cancellationToken);
+                await SqliteIndex(host, sqliteOptions, incremental, cancellationToken);
             }
             else
             {
@@ -131,7 +132,7 @@ public static class IndexCommandHandler
             codedOutput.Flush();
 
             // Stream each document directly to disk (field 2, length-delimited)
-            await foreach (var document in indexer.IndexDocuments(host, options, cancellationToken))
+            await foreach (var document in indexer.IndexDocuments(host, options, cancellationToken: cancellationToken))
             {
                 codedOutput.WriteTag(2, WireFormat.WireType.LengthDelimited);
                 codedOutput.WriteMessage(document);
@@ -149,25 +150,34 @@ public static class IndexCommandHandler
             stopwatch.Elapsed.ToFriendlyString());
     }
 
-    private static async Task SqliteIndex(IHost host, IndexCommandOptions options, CancellationToken cancellationToken)
+    private static async Task SqliteIndex(IHost host, IndexCommandOptions options, bool incremental, CancellationToken cancellationToken)
     {
         var stopwatch = Stopwatch.StartNew();
         var indexer = host.Services.GetRequiredService<ScipProjectIndexer>();
 
-        // Delete existing file if present
-        if (File.Exists(options.Output.FullName))
+        var isIncremental = incremental && File.Exists(options.Output.FullName);
+        if (!isIncremental && File.Exists(options.Output.FullName))
             File.Delete(options.Output.FullName);
 
+        if (isIncremental)
+            options.Logger.LogInformation("Incremental mode: reusing existing index {Output}", options.Output);
+
         var documentCount = 0;
+        var allVisitedPaths = new HashSet<string>();
         using (var writer = new SqliteIndexWriter(options.Output.FullName))
         {
-            await foreach (var document in indexer.IndexDocuments(host, options, cancellationToken))
+            await foreach (var document in indexer.IndexDocuments(host, options, isIncremental ? writer : null, isIncremental ? allVisitedPaths : null, cancellationToken))
             {
                 writer.WriteDocument(document);
+                if (!string.IsNullOrEmpty(document.RelativePath))
+                    allVisitedPaths.Add(document.RelativePath);
                 documentCount++;
             }
 
-            if (documentCount <= 0)
+            if (isIncremental)
+                writer.PurgeDeletedFiles(allVisitedPaths);
+
+            if (documentCount <= 0 && writer.SkippedCount <= 0)
             {
                 options.Logger.LogWarning("Indexing finished without error but no documents were indexed.");
             }
@@ -175,8 +185,16 @@ public static class IndexCommandHandler
             writer.FinalizeIndex();
         }
 
-        options.Logger.LogInformation("done (sqlite): {OptionsOutput} ({DocumentCount} documents, {TimeElapsed})",
-            options.Output, documentCount, stopwatch.Elapsed.ToFriendlyString());
+        if (isIncremental)
+        {
+            options.Logger.LogInformation("done (sqlite, incremental): {OptionsOutput} ({DocumentCount} re-indexed, {SkippedCount} unchanged, {TimeElapsed})",
+                options.Output, documentCount, allVisitedPaths.Count - documentCount, stopwatch.Elapsed.ToFriendlyString());
+        }
+        else
+        {
+            options.Logger.LogInformation("done (sqlite): {OptionsOutput} ({DocumentCount} documents, {TimeElapsed})",
+                options.Output, documentCount, stopwatch.Elapsed.ToFriendlyString());
+        }
     }
 
     private static string FixThisProblem(string examplePath) =>

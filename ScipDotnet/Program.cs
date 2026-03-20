@@ -51,6 +51,8 @@ public static class Program
                 @"and in the default user and system config locations."),
             new Option<string>("--output-format", () => "scip",
                 "Output format: 'scip' for protobuf SCIP file, 'sqlite' for SQLite database"),
+            new Option<bool>("--incremental", () => false,
+                "Enable incremental indexing for SQLite output. Only re-indexes files whose content has changed since the last run."),
         };
         indexCommand.Handler = CommandHandler.Create(IndexCommandHandler.Process);
         var rootCommand =

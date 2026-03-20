@@ -19,8 +19,24 @@ public sealed class SqliteIndexWriter : IDisposable
     private readonly SqliteCommand _insertDefnRange;
     private readonly SqliteCommand _lookupSymbol;
     private readonly SqliteCommand _lookupDocument;
+    private readonly SqliteCommand _lookupDocumentHash;
+    private readonly SqliteCommand _updateDocumentHash;
+    private readonly SqliteCommand _purgeDocMentions;
+    private readonly SqliteCommand _purgeDocDefnRanges;
+    private readonly SqliteCommand _purgeDocChunks;
+    private readonly SqliteCommand _purgeDocument;
     private readonly Dictionary<string, long> _symbolCache = new();
     private readonly HashSet<string> _seenDocuments = new();
+
+    /// <summary>
+    /// Tracks how many documents were skipped because their content hash was unchanged.
+    /// </summary>
+    public int SkippedCount { get; private set; }
+
+    /// <summary>
+    /// Tracks how many stale documents were purged (deleted from disk).
+    /// </summary>
+    public int PurgedCount { get; private set; }
 
     public SqliteIndexWriter(string dbPath)
     {
@@ -47,6 +63,12 @@ public sealed class SqliteIndexWriter : IDisposable
         _insertDefnRange = Prepare("INSERT INTO defn_enclosing_ranges (document_id, symbol_id, start_line, start_char, end_line, end_char) VALUES ($docId, $symId, $sl, $sc, $el, $ec);", ("$docId", SqliteType.Integer), ("$symId", SqliteType.Integer), ("$sl", SqliteType.Integer), ("$sc", SqliteType.Integer), ("$el", SqliteType.Integer), ("$ec", SqliteType.Integer));
         _lookupSymbol = Prepare("SELECT id FROM global_symbols WHERE symbol = $sym;", ("$sym", SqliteType.Text));
         _lookupDocument = Prepare("SELECT id FROM documents WHERE relative_path = $path;", ("$path", SqliteType.Text));
+        _lookupDocumentHash = Prepare("SELECT content_hash FROM documents WHERE relative_path = $path;", ("$path", SqliteType.Text));
+        _updateDocumentHash = Prepare("UPDATE documents SET content_hash = $hash WHERE relative_path = $path;", ("$hash", SqliteType.Text), ("$path", SqliteType.Text));
+        _purgeDocMentions = Prepare("DELETE FROM mentions WHERE chunk_id IN (SELECT id FROM chunks WHERE document_id = $docId);", ("$docId", SqliteType.Integer));
+        _purgeDocDefnRanges = Prepare("DELETE FROM defn_enclosing_ranges WHERE document_id = $docId;", ("$docId", SqliteType.Integer));
+        _purgeDocChunks = Prepare("DELETE FROM chunks WHERE document_id = $docId;", ("$docId", SqliteType.Integer));
+        _purgeDocument = Prepare("DELETE FROM documents WHERE id = $docId;", ("$docId", SqliteType.Integer));
     }
 
     private SqliteCommand Prepare(string sql, params (string name, SqliteType type)[] ps)
@@ -62,12 +84,114 @@ public sealed class SqliteIndexWriter : IDisposable
     {
         using var cmd = _connection.CreateCommand();
         cmd.CommandText =
-            "CREATE TABLE IF NOT EXISTS documents (id INTEGER PRIMARY KEY, language TEXT, relative_path TEXT NOT NULL UNIQUE, position_encoding TEXT, text TEXT);" +
+            "CREATE TABLE IF NOT EXISTS documents (id INTEGER PRIMARY KEY, language TEXT, relative_path TEXT NOT NULL UNIQUE, position_encoding TEXT, text TEXT, content_hash TEXT);" +
             "CREATE TABLE IF NOT EXISTS chunks (id INTEGER PRIMARY KEY, document_id INTEGER NOT NULL, chunk_index INTEGER NOT NULL, start_line INTEGER NOT NULL, end_line INTEGER NOT NULL, occurrences BLOB NOT NULL, FOREIGN KEY (document_id) REFERENCES documents(id));" +
             "CREATE TABLE IF NOT EXISTS global_symbols (id INTEGER PRIMARY KEY, symbol TEXT NOT NULL UNIQUE, display_name TEXT, kind INTEGER, documentation TEXT, signature BLOB, enclosing_symbol TEXT, relationships BLOB);" +
             "CREATE TABLE IF NOT EXISTS mentions (chunk_id INTEGER NOT NULL, symbol_id INTEGER NOT NULL, role INTEGER NOT NULL, PRIMARY KEY (chunk_id, symbol_id, role), FOREIGN KEY (chunk_id) REFERENCES chunks(id), FOREIGN KEY (symbol_id) REFERENCES global_symbols(id));" +
             "CREATE TABLE IF NOT EXISTS defn_enclosing_ranges (id INTEGER PRIMARY KEY, document_id INTEGER NOT NULL, symbol_id INTEGER NOT NULL, start_line INTEGER NOT NULL, start_char INTEGER NOT NULL, end_line INTEGER NOT NULL, end_char INTEGER NOT NULL, FOREIGN KEY (document_id) REFERENCES documents(id), FOREIGN KEY (symbol_id) REFERENCES global_symbols(id));";
         cmd.ExecuteNonQuery();
+        // Migrate: add content_hash column if missing (for existing databases)
+        MigrateAddContentHash();
+    }
+
+    private void MigrateAddContentHash()
+    {
+        using var cmd = _connection.CreateCommand();
+        cmd.CommandText = "PRAGMA table_info(documents);";
+        using var reader = cmd.ExecuteReader();
+        var hasContentHash = false;
+        while (reader.Read())
+        {
+            if (string.Equals(reader.GetString(1), "content_hash", StringComparison.OrdinalIgnoreCase))
+            {
+                hasContentHash = true;
+                break;
+            }
+        }
+        reader.Close();
+        if (!hasContentHash)
+        {
+            using var alter = _connection.CreateCommand();
+            alter.CommandText = "ALTER TABLE documents ADD COLUMN content_hash TEXT;";
+            alter.ExecuteNonQuery();
+        }
+    }
+
+    /// <summary>
+    /// Returns true if the document needs to be re-indexed (hash mismatch or not yet indexed).
+    /// </summary>
+    public bool ShouldReindex(string relativePath, string contentHash)
+    {
+        _lookupDocumentHash.Parameters["$path"].Value = relativePath;
+        var result = _lookupDocumentHash.ExecuteScalar();
+        if (result is null or DBNull) return true;
+        return !string.Equals((string)result, contentHash, StringComparison.Ordinal);
+    }
+
+    /// <summary>
+    /// Purges all indexed data for a document (chunks, mentions, defn_ranges) so it can be re-indexed.
+    /// </summary>
+    public void PurgeDocument(string relativePath)
+    {
+        _lookupDocument.Parameters["$path"].Value = relativePath;
+        var result = _lookupDocument.ExecuteScalar();
+        if (result is null or DBNull) return;
+        var docId = (long)result;
+        PurgeDocumentById(docId);
+    }
+
+    private void PurgeDocumentById(long docId)
+    {
+        _purgeDocMentions.Parameters["$docId"].Value = docId;
+        _purgeDocMentions.ExecuteNonQuery();
+        _purgeDocDefnRanges.Parameters["$docId"].Value = docId;
+        _purgeDocDefnRanges.ExecuteNonQuery();
+        _purgeDocChunks.Parameters["$docId"].Value = docId;
+        _purgeDocChunks.ExecuteNonQuery();
+    }
+
+    /// <summary>
+    /// Removes documents from the database that are no longer present on disk.
+    /// </summary>
+    public void PurgeDeletedFiles(HashSet<string> currentFiles)
+    {
+        using var cmd = _connection.CreateCommand();
+        cmd.CommandText = "SELECT id, relative_path FROM documents;";
+        var toDelete = new List<(long id, string path)>();
+        using (var reader = cmd.ExecuteReader())
+        {
+            while (reader.Read())
+            {
+                var path = reader.GetString(1);
+                if (!currentFiles.Contains(path))
+                    toDelete.Add((reader.GetInt64(0), path));
+            }
+        }
+        foreach (var (id, _) in toDelete)
+        {
+            PurgeDocumentById(id);
+            _purgeDocument.Parameters["$docId"].Value = id;
+            _purgeDocument.ExecuteNonQuery();
+        }
+        PurgedCount = toDelete.Count;
+    }
+
+    /// <summary>
+    /// Marks a document as skipped (unchanged) during incremental indexing.
+    /// </summary>
+    public void MarkSkipped()
+    {
+        SkippedCount++;
+    }
+
+    /// <summary>
+    /// Updates the stored content hash for a document after successful re-indexing.
+    /// </summary>
+    public void UpdateContentHash(string relativePath, string contentHash)
+    {
+        _updateDocumentHash.Parameters["$hash"].Value = contentHash;
+        _updateDocumentHash.Parameters["$path"].Value = relativePath;
+        _updateDocumentHash.ExecuteNonQuery();
     }
 
     private long EnsureSymbol(string symbol, SymbolInformation? info = null)
@@ -208,6 +332,12 @@ public sealed class SqliteIndexWriter : IDisposable
         _insertDefnRange.Dispose();
         _lookupSymbol.Dispose();
         _lookupDocument.Dispose();
+        _lookupDocumentHash.Dispose();
+        _updateDocumentHash.Dispose();
+        _purgeDocMentions.Dispose();
+        _purgeDocDefnRanges.Dispose();
+        _purgeDocChunks.Dispose();
+        _purgeDocument.Dispose();
         _compressor.Dispose();
         _transaction.Dispose();
         _connection.Dispose();
