@@ -53,6 +53,34 @@ If you already have `scip-dotnet` installed you will get an error message saying
 "Tool 'scip-dotnet' is already installed.". To fix this problem, run the command
 `dotnet tool update --global scip-dotnet` to update to the latest version.
 
+## Recent Features
+
+### SQLite Output Format
+
+Support outputting the index directly to a SQLite database instead of the default SCIP protobuf file. This is useful for large codebases where you need fast random-access queries against the index.
+
+```sh
+scip-dotnet index --output-format sqlite --output index.db
+```
+
+### Incremental Indexing
+
+When using SQLite output, you can enable incremental mode to skip re-indexing files whose content hasn't changed since the last run. This dramatically reduces indexing time for large codebases (e.g. from 32 minutes down to 1-2 minutes for typical daily changes).
+
+```sh
+scip-dotnet index --output-format sqlite --output index.db --incremental
+```
+
+Incremental mode uses SHA256 content hashing to detect file changes. Deleted files are automatically purged from the index. Use without `--incremental` to force a full rebuild.
+
+### EnclosingRange Support
+
+Definitions now include `enclosing_range` information, which records the full span of a symbol's enclosing declaration (e.g. the entire class or method body). This enables richer code navigation experiences such as highlighting the full scope of a definition.
+
+### Optimized Chunk Writing
+
+Occurrences are now written in chunks (grouped by line ranges) with Zstd compression, reducing database size and improving query performance for line-range-based lookups.
+
 ## Contributing
 
 The section below is only relevant for contributors to this repository.
