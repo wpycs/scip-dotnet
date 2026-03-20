@@ -22,7 +22,8 @@ public static class IndexCommandHandler
         bool allowGlobalSymbolDefinitions,
         int dotnetRestoreTimeout,
         bool skipDotnetRestore,
-        FileInfo? nugetConfigPath
+        FileInfo? nugetConfigPath,
+        string outputFormat
         )
     {
         var logger = host.Services.GetRequiredService<ILogger<IndexCommandOptions>>();
@@ -53,7 +54,18 @@ public static class IndexCommandHandler
         var cancellationToken = lifetime.ApplicationStopping;
         try
         {
-            await ScipIndex(host, options, cancellationToken);
+            if (string.Equals(outputFormat, "sqlite", StringComparison.OrdinalIgnoreCase))
+            {
+                var sqliteOutput = output.EndsWith(".db", StringComparison.OrdinalIgnoreCase)
+                    ? OutputFile(workingDirectory, output)
+                    : OutputFile(workingDirectory, Path.ChangeExtension(output, ".db"));
+                var sqliteOptions = options with { Output = sqliteOutput };
+                await SqliteIndex(host, sqliteOptions, cancellationToken);
+            }
+            else
+            {
+                await ScipIndex(host, options, cancellationToken);
+            }
         }
         catch (OperationCanceledException)
         {
@@ -135,6 +147,36 @@ public static class IndexCommandHandler
 
         options.Logger.LogInformation("done: {OptionsOutput} {TimeElapsed}", options.Output,
             stopwatch.Elapsed.ToFriendlyString());
+    }
+
+    private static async Task SqliteIndex(IHost host, IndexCommandOptions options, CancellationToken cancellationToken)
+    {
+        var stopwatch = Stopwatch.StartNew();
+        var indexer = host.Services.GetRequiredService<ScipProjectIndexer>();
+
+        // Delete existing file if present
+        if (File.Exists(options.Output.FullName))
+            File.Delete(options.Output.FullName);
+
+        var documentCount = 0;
+        using (var writer = new SqliteIndexWriter(options.Output.FullName))
+        {
+            await foreach (var document in indexer.IndexDocuments(host, options, cancellationToken))
+            {
+                writer.WriteDocument(document);
+                documentCount++;
+            }
+
+            if (documentCount <= 0)
+            {
+                options.Logger.LogWarning("Indexing finished without error but no documents were indexed.");
+            }
+
+            writer.FinalizeIndex();
+        }
+
+        options.Logger.LogInformation("done (sqlite): {OptionsOutput} ({DocumentCount} documents, {TimeElapsed})",
+            options.Output, documentCount, stopwatch.Elapsed.ToFriendlyString());
     }
 
     private static string FixThisProblem(string examplePath) =>

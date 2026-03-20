@@ -49,6 +49,8 @@ public static class Program
                 @"Provide a case sensitive custom path for ""dotnet restore"" to find the NuGet.config file. " +
                 @"If not provided, ""dotnet restore"" will search for the NuGet.config file recursively up the folder hierarchy " +
                 @"and in the default user and system config locations."),
+            new Option<string>("--output-format", () => "scip",
+                "Output format: 'scip' for protobuf SCIP file, 'sqlite' for SQLite database"),
         };
         indexCommand.Handler = CommandHandler.Create(IndexCommandHandler.Process);
         var rootCommand =
