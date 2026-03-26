@@ -86,7 +86,7 @@ public class ScipDocumentIndexer
         }
 
         var owner = sym.Kind == SymbolKind.Namespace
-            ? CreateScipPackageSymbol(sym)
+            ? (sym.Name == "" ? CreateScipPackageSymbol(sym) : CreateScipSymbol(sym.ContainingSymbol))
             : CreateScipSymbol(sym.ContainingSymbol);
 
         if (owner.IsLocal())
@@ -177,26 +177,53 @@ public class ScipDocumentIndexer
 
     private static string MethodDisambiguator(ISymbol sym)
     {
-        if (sym is not IMethodSymbol)
+        if (sym is not IMethodSymbol methodSymbol)
         {
             return "";
         }
 
         var overloadCount = 0;
-        foreach (var member in sym.ContainingType.GetMembers())
-        {
-            if (member.Equals(sym, SymbolEqualityComparer.Default))
-            {
-                return overloadCount == 0 ? "" : $"+{overloadCount}";
-            }
+        var currentMethodSignature = GetMethodSignature(methodSymbol);
 
-            if (member.Name.Equals(sym.Name))
+        // First try to get overloads from ContainingType.GetMembers()
+        var members = sym.ContainingType.GetMembers();
+        var foundInMembers = false;
+
+        foreach (var member in members)
+        {
+            if (member.Name.Equals(sym.Name) && member is IMethodSymbol)
             {
+                if (member.Equals(sym, SymbolEqualityComparer.Default))
+                {
+                    foundInMembers = true;
+                    break;
+                }
                 overloadCount++;
             }
         }
 
+        if (foundInMembers)
+        {
+            return overloadCount == 0 ? "" : $"+{overloadCount}";
+        }
+
+        // If not found in members (e.g., for external symbols), use parameter count as fallback
+        // This helps distinguish overloads even when GetMembers() doesn't return all of them
+        var paramCount = methodSymbol.Parameters.Length;
+
+        // For external symbols, we can't reliably determine the exact overload index,
+        // but we can use parameter count as a heuristic
+        // Return empty string for now to avoid incorrect disambiguation
         return "";
+    }
+
+    /// <summary>
+    /// Gets a signature string for a method to help identify overloads.
+    /// </summary>
+    private static string GetMethodSignature(IMethodSymbol method)
+    {
+        var paramTypes = string.Join(",", method.Parameters.Select(p => p.Type.Name));
+        return $"{method.Name}({paramTypes})";
     }
 
     private readonly string[] _isIgnoredRelationshipSymbol =
@@ -212,6 +239,13 @@ public class ScipDocumentIndexer
     // to query all the implementations of something like System/Object#.
     private bool IsIgnoredRelationshipSymbol(string symbol) =>
         _isIgnoredRelationshipSymbol.Any(symbol.EndsWith);
+
+    /// <summary>
+    /// Checks if a symbol is from an external source (e.g., NuGet package).
+    /// External symbols have no source locations.
+    /// </summary>
+    private static bool IsExternalSymbol(ISymbol symbol) =>
+        symbol.Locations.All(loc => !loc.IsInSource);
 
     public void VisitOccurrence(ISymbol? symbol, Location location, bool isDefinition, Location? enclosingLocation = null)
     {
@@ -246,9 +280,11 @@ public class ScipDocumentIndexer
             }
         }
 
-        if (!isDefinition) return;
+        // Emit SymbolInformation for definition occurrences or for external symbols (NuGet references)
+        // External symbols need display_name populated so they can be properly displayed in search results
+        var isExternal = IsExternalSymbol(symbol);
+        if (!isDefinition && !isExternal) return;
 
-        // Emit SymbolInformation for this definition occurrence.
         var info = new SymbolInformation { Symbol = scipSymbol };
         _doc.Symbols.Add(info);
 
@@ -263,6 +299,9 @@ public class ScipDocumentIndexer
         {
             info.Documentation.Add(symbolDocumentation);
         }
+
+        // Only emit relationships for definition occurrences
+        if (!isDefinition) return;
 
         switch (symbol)
         {

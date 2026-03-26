@@ -86,9 +86,19 @@ public static class Program
     private static MSBuildWorkspace CreateWorkspace()
     {
         MSBuildLocator.RegisterDefaults();
+
+        // Disable ruleset checking to avoid "ManagedMinimumRules.ruleset" not found errors
+        Environment.SetEnvironmentVariable("MSBUILD_EXE_PATH", "");
+
         var properties = new Dictionary<string, string>
         {
-            { "SuppressTfmSupportBuildWarnings", "true" }
+            { "SuppressTfmSupportBuildWarnings", "true" },
+            { "EnableNETAnalyzers", "false" },
+            { "EnforceCodeStyleInBuild", "false" },
+            { "TreatWarningsAsErrors", "false" },
+            { "CodeAnalysisRuleSet", "" },
+            { "RunCodeAnalysis", "false" },
+            { "CodeAnalysisIgnoreGeneratedCode", "true" }
         };
         return MSBuildWorkspace.Create(properties);
     }
