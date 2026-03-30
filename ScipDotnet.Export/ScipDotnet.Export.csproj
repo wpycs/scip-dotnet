@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <TargetFrameworks>net10.0;net9.0;net8.0;net7.0;net6.0</TargetFrameworks>
+        <AssemblyName>scip-export</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Google.Protobuf" Version="3.30.0" />
+        <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.0" />
+        <PackageReference Include="ZstdSharp.Port" Version="0.8.1" />
+    </ItemGroup>
+
+    <!-- Reference the generated Scip.cs from the main project -->
+    <ItemGroup>
+        <Compile Include="..\ScipDotnet\Scip.cs" Link="Scip.cs" />
+    </ItemGroup>
+
+</Project>
