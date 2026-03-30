@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using System.Security.Cryptography;
+using System.Text;
 using Google.Protobuf;
 using Microsoft.CodeAnalysis.Elfie.Extensions;
 using Microsoft.CodeAnalysis.MSBuild;
@@ -170,7 +172,22 @@ public static class IndexCommandHandler
             {
                 writer.WriteDocument(document);
                 if (!string.IsNullOrEmpty(document.RelativePath))
+                {
                     allVisitedPaths.Add(document.RelativePath);
+                    // For non-incremental runs, store content hash so subsequent incremental runs
+                    // can detect unchanged files. In incremental mode, UpdateContentHash is already
+                    // called inside IndexDocument after re-indexing.
+                    if (!isIncremental)
+                    {
+                        var fullPath = Path.Combine(options.WorkingDirectory.FullName, document.RelativePath);
+                        if (File.Exists(fullPath))
+                        {
+                            var content = await File.ReadAllTextAsync(fullPath, cancellationToken);
+                            var hash = ComputeContentHash(content);
+                            writer.UpdateContentHash(document.RelativePath, hash);
+                        }
+                    }
+                }
                 documentCount++;
             }
 
@@ -195,6 +212,12 @@ public static class IndexCommandHandler
             options.Logger.LogInformation("done (sqlite): {OptionsOutput} ({DocumentCount} documents, {TimeElapsed})",
                 options.Output, documentCount, stopwatch.Elapsed.ToFriendlyString());
         }
+    }
+
+    private static string ComputeContentHash(string content)
+    {
+        var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(content));
+        return Convert.ToHexString(bytes);
     }
 
     private static string FixThisProblem(string examplePath) =>
