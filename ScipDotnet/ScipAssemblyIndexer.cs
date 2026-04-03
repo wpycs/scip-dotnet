@@ -183,7 +183,10 @@ public class ScipAssemblyIndexer
             if (member.IsImplicitlyDeclared) continue;
             var memberInfo = CreateSymbolInfo(member);
             if (memberInfo != null)
+            {
+                AddMemberOverrideRelationships(member, memberInfo);
                 yield return memberInfo;
+            }
         }
     }
 
@@ -199,6 +202,49 @@ public class ScipAssemblyIndexer
 
     private static bool IsIgnoredBaseType(INamedTypeSymbol type) =>
         IgnoredBaseTypes.Contains(type.ToDisplayString());
+
+    private void AddMemberOverrideRelationships(ISymbol member, SymbolInformation memberInfo)
+    {
+        switch (member)
+        {
+            case IMethodSymbol methodSymbol:
+                {
+                    var overridden = methodSymbol.OverriddenMethod;
+                    while (overridden != null)
+                    {
+                        var sym = CreateScipSymbol(overridden);
+                        if (sym != ScipSymbol.Empty)
+                            memberInfo.Relationships.Add(new Relationship { Symbol = sym.Value, IsImplementation = true, IsReference = true });
+                        overridden = overridden.OverriddenMethod;
+                    }
+                    break;
+                }
+            case IPropertySymbol propertySymbol:
+                {
+                    var overridden = propertySymbol.OverriddenProperty;
+                    while (overridden != null)
+                    {
+                        var sym = CreateScipSymbol(overridden);
+                        if (sym != ScipSymbol.Empty)
+                            memberInfo.Relationships.Add(new Relationship { Symbol = sym.Value, IsImplementation = true, IsReference = true });
+                        overridden = overridden.OverriddenProperty;
+                    }
+                    break;
+                }
+            case IEventSymbol eventSymbol:
+                {
+                    var overridden = eventSymbol.OverriddenEvent;
+                    while (overridden != null)
+                    {
+                        var sym = CreateScipSymbol(overridden);
+                        if (sym != ScipSymbol.Empty)
+                            memberInfo.Relationships.Add(new Relationship { Symbol = sym.Value, IsImplementation = true, IsReference = true });
+                        overridden = overridden.OverriddenEvent;
+                    }
+                    break;
+                }
+        }
+    }
 
     private SymbolInformation? CreateSymbolInfo(ISymbol symbol)
     {

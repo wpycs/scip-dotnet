@@ -367,6 +367,58 @@ public class ScipDocumentIndexer
 
                     break;
                 }
+            case IPropertySymbol propertySymbol:
+                {
+                    var overriddenProperty = propertySymbol.OverriddenProperty;
+                    while (overriddenProperty != null)
+                    {
+                        info.Relationships.Add(new Relationship
+                        {
+                            Symbol = CreateScipSymbol(overriddenProperty).Value,
+                            IsImplementation = true,
+                            IsReference = true
+                        });
+                        overriddenProperty = overriddenProperty.OverriddenProperty;
+                    }
+
+                    foreach (var interfaceProp in InterfaceMemberImplementations(propertySymbol))
+                    {
+                        info.Relationships.Add(new Relationship
+                        {
+                            Symbol = CreateScipSymbol(interfaceProp).Value,
+                            IsImplementation = true,
+                            IsReference = true
+                        });
+                    }
+
+                    break;
+                }
+            case IEventSymbol eventSymbol:
+                {
+                    var overriddenEvent = eventSymbol.OverriddenEvent;
+                    while (overriddenEvent != null)
+                    {
+                        info.Relationships.Add(new Relationship
+                        {
+                            Symbol = CreateScipSymbol(overriddenEvent).Value,
+                            IsImplementation = true,
+                            IsReference = true
+                        });
+                        overriddenEvent = overriddenEvent.OverriddenEvent;
+                    }
+
+                    foreach (var interfaceEvent in InterfaceMemberImplementations(eventSymbol))
+                    {
+                        info.Relationships.Add(new Relationship
+                        {
+                            Symbol = CreateScipSymbol(interfaceEvent).Value,
+                            IsImplementation = true,
+                            IsReference = true
+                        });
+                    }
+
+                    break;
+                }
         }
     }
 
@@ -375,6 +427,23 @@ public class ScipDocumentIndexer
     // methods.
     private static IEnumerable<ISymbol> InterfaceImplementations(IMethodSymbol symbol)
     {
+        foreach (var interfaceSymbol in symbol.ContainingType.AllInterfaces)
+        {
+            foreach (var interfaceMember in interfaceSymbol.GetMembers())
+            {
+                var implementation = symbol.ContainingType.FindImplementationForInterfaceMember(interfaceMember);
+                if (implementation != null && symbol.Equals(implementation, SymbolEqualityComparer.Default))
+                {
+                    yield return interfaceMember;
+                }
+            }
+        }
+    }
+
+    // Returns interface members (properties, events, etc.) implemented by the given symbol.
+    private static IEnumerable<ISymbol> InterfaceMemberImplementations(ISymbol symbol)
+    {
+        if (symbol.ContainingType == null) yield break;
         foreach (var interfaceSymbol in symbol.ContainingType.AllInterfaces)
         {
             foreach (var interfaceMember in interfaceSymbol.GetMembers())
