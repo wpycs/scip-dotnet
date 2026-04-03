@@ -86,7 +86,7 @@ public static class IndexAssemblyCommandHandler
         var metadata = new Metadata
         {
             ProjectRoot = "file://" + Path.GetDirectoryName(outputFile.FullName)?.Replace('\\', '/'),
-            ToolInfo = new ToolInfo { Name = "scip-dotnet", Version = "0.1.0-SNAPSHOT" },
+            ToolInfo = new ToolInfo { Name = "scip-dotnet-ex", Version = "0.1.0-SNAPSHOT" },
             TextDocumentEncoding = TextEncoding.Utf8,
         };
 

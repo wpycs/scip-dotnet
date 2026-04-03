@@ -117,7 +117,7 @@ public static class IndexCommandHandler
             ProjectRoot = new Uri(new Uri("file://"), options.WorkingDirectory.FullName).ToString(),
             ToolInfo = new ToolInfo
             {
-                Name = "scip-dotnet",
+                Name = "scip-dotnet-ex",
                 Version = "0.1.0-SNAPSHOT"
             },
             TextDocumentEncoding = TextEncoding.Utf8,

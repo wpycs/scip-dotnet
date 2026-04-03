@@ -4,13 +4,15 @@
     <OutputType>Exe</OutputType>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>0.2.14</Version>
+    <Version>0.0.01</Version>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageType>DotnetTool</PackageType>
     <TargetFrameworks>net10.0;net9.0;net8.0;net7.0;net6.0</TargetFrameworks>
     <PackAsTool>true</PackAsTool>
-    <AssemblyName>scip-dotnet</AssemblyName>
+    <AssemblyName>scip-dotnet-ex</AssemblyName>
+    <PackageId>scip-dotnet-ex</PackageId>
+    <ToolCommandName>scip-dotnet-ex</ToolCommandName>
     <RepositoryUrl>https://github.com/sourcegraph/scip-dotnet</RepositoryUrl>
   </PropertyGroup>
 
