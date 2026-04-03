@@ -19,12 +19,13 @@ public sealed class SqliteIndexWriter : IDisposable
     private readonly SqliteCommand _insertDefnRange;
     private readonly SqliteCommand _lookupSymbol;
     private readonly SqliteCommand _lookupDocument;
-    private readonly SqliteCommand _lookupDocumentHash;
     private readonly SqliteCommand _updateDocumentHash;
+    private readonly Dictionary<string, string?> _contentHashCache = new();
     private readonly SqliteCommand _purgeDocMentions;
     private readonly SqliteCommand _purgeDocDefnRanges;
     private readonly SqliteCommand _purgeDocChunks;
     private readonly SqliteCommand _purgeDocument;
+    private readonly SqliteCommand _insertInheritance;
     private readonly Dictionary<string, long> _symbolCache = new();
     private readonly HashSet<string> _seenDocuments = new();
 
@@ -63,8 +64,9 @@ public sealed class SqliteIndexWriter : IDisposable
         _insertDefnRange = Prepare("INSERT INTO defn_enclosing_ranges (document_id, symbol_id, start_line, start_char, end_line, end_char) VALUES ($docId, $symId, $sl, $sc, $el, $ec);", ("$docId", SqliteType.Integer), ("$symId", SqliteType.Integer), ("$sl", SqliteType.Integer), ("$sc", SqliteType.Integer), ("$el", SqliteType.Integer), ("$ec", SqliteType.Integer));
         _lookupSymbol = Prepare("SELECT id FROM global_symbols WHERE symbol = $sym;", ("$sym", SqliteType.Text));
         _lookupDocument = Prepare("SELECT id FROM documents WHERE relative_path = $path;", ("$path", SqliteType.Text));
-        _lookupDocumentHash = Prepare("SELECT content_hash FROM documents WHERE relative_path = $path;", ("$path", SqliteType.Text));
         _updateDocumentHash = Prepare("UPDATE documents SET content_hash = $hash WHERE relative_path = $path;", ("$hash", SqliteType.Text), ("$path", SqliteType.Text));
+        _insertInheritance = Prepare("INSERT OR IGNORE INTO inheritance_chains (symbol_id, base_symbol_id, depth) VALUES ($symId, $baseSymId, $depth);", ("$symId", SqliteType.Integer), ("$baseSymId", SqliteType.Integer), ("$depth", SqliteType.Integer));
+        LoadContentHashCache();
         _purgeDocMentions = Prepare("DELETE FROM mentions WHERE chunk_id IN (SELECT id FROM chunks WHERE document_id = $docId);", ("$docId", SqliteType.Integer));
         _purgeDocDefnRanges = Prepare("DELETE FROM defn_enclosing_ranges WHERE document_id = $docId;", ("$docId", SqliteType.Integer));
         _purgeDocChunks = Prepare("DELETE FROM chunks WHERE document_id = $docId;", ("$docId", SqliteType.Integer));
@@ -88,7 +90,8 @@ public sealed class SqliteIndexWriter : IDisposable
             "CREATE TABLE IF NOT EXISTS chunks (id INTEGER PRIMARY KEY, document_id INTEGER NOT NULL, chunk_index INTEGER NOT NULL, start_line INTEGER NOT NULL, end_line INTEGER NOT NULL, occurrences BLOB NOT NULL, FOREIGN KEY (document_id) REFERENCES documents(id));" +
             "CREATE TABLE IF NOT EXISTS global_symbols (id INTEGER PRIMARY KEY, symbol TEXT NOT NULL UNIQUE, display_name TEXT, kind INTEGER, documentation TEXT, signature BLOB, enclosing_symbol TEXT, relationships BLOB);" +
             "CREATE TABLE IF NOT EXISTS mentions (chunk_id INTEGER NOT NULL, symbol_id INTEGER NOT NULL, role INTEGER NOT NULL, PRIMARY KEY (chunk_id, symbol_id, role), FOREIGN KEY (chunk_id) REFERENCES chunks(id), FOREIGN KEY (symbol_id) REFERENCES global_symbols(id));" +
-            "CREATE TABLE IF NOT EXISTS defn_enclosing_ranges (id INTEGER PRIMARY KEY, document_id INTEGER NOT NULL, symbol_id INTEGER NOT NULL, start_line INTEGER NOT NULL, start_char INTEGER NOT NULL, end_line INTEGER NOT NULL, end_char INTEGER NOT NULL, FOREIGN KEY (document_id) REFERENCES documents(id), FOREIGN KEY (symbol_id) REFERENCES global_symbols(id));";
+            "CREATE TABLE IF NOT EXISTS defn_enclosing_ranges (id INTEGER PRIMARY KEY, document_id INTEGER NOT NULL, symbol_id INTEGER NOT NULL, start_line INTEGER NOT NULL, start_char INTEGER NOT NULL, end_line INTEGER NOT NULL, end_char INTEGER NOT NULL, FOREIGN KEY (document_id) REFERENCES documents(id), FOREIGN KEY (symbol_id) REFERENCES global_symbols(id));" +
+            "CREATE TABLE IF NOT EXISTS inheritance_chains (id INTEGER PRIMARY KEY, symbol_id INTEGER NOT NULL, base_symbol_id INTEGER NOT NULL, depth INTEGER NOT NULL DEFAULT 1, FOREIGN KEY (symbol_id) REFERENCES global_symbols(id), FOREIGN KEY (base_symbol_id) REFERENCES global_symbols(id), UNIQUE(symbol_id, base_symbol_id));";
         cmd.ExecuteNonQuery();
         // Migrate: add content_hash column if missing (for existing databases)
         MigrateAddContentHash();
@@ -117,15 +120,29 @@ public sealed class SqliteIndexWriter : IDisposable
         }
     }
 
+    private void LoadContentHashCache()
+    {
+        using var cmd = _connection.CreateCommand();
+        cmd.CommandText = "SELECT relative_path, content_hash FROM documents;";
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            var path = reader.GetString(0);
+            var hash = reader.IsDBNull(1) ? null : reader.GetString(1);
+            _contentHashCache[path] = hash;
+        }
+    }
+
     /// <summary>
     /// Returns true if the document needs to be re-indexed (hash mismatch or not yet indexed).
     /// </summary>
     public bool ShouldReindex(string relativePath, string contentHash)
     {
-        _lookupDocumentHash.Parameters["$path"].Value = relativePath;
-        var result = _lookupDocumentHash.ExecuteScalar();
-        if (result is null or DBNull) return true;
-        return !string.Equals((string)result, contentHash, StringComparison.Ordinal);
+        if (_contentHashCache.TryGetValue(relativePath, out var cachedHash))
+        {
+            return !string.Equals(cachedHash, contentHash, StringComparison.Ordinal);
+        }
+        return true;
     }
 
     /// <summary>
@@ -192,6 +209,7 @@ public sealed class SqliteIndexWriter : IDisposable
         _updateDocumentHash.Parameters["$hash"].Value = contentHash;
         _updateDocumentHash.Parameters["$path"].Value = relativePath;
         _updateDocumentHash.ExecuteNonQuery();
+        _contentHashCache[relativePath] = contentHash;
     }
 
     private long EnsureSymbol(string symbol, SymbolInformation? info = null)
@@ -218,7 +236,61 @@ public sealed class SqliteIndexWriter : IDisposable
         _lookupSymbol.Parameters["$sym"].Value = symbol;
         var id = (long)_lookupSymbol.ExecuteScalar()!;
         _symbolCache[symbol] = id;
+
+        // Write inheritance relationships (is_implementation => base class / interface)
+        if (info != null)
+        {
+            foreach (var rel in info.Relationships)
+            {
+                if (!rel.IsImplementation || string.IsNullOrEmpty(rel.Symbol)) continue;
+                if (IsImplicitBaseType(rel.Symbol)) continue;
+                var baseId = EnsureSymbol(rel.Symbol);
+                _insertInheritance.Parameters["$symId"].Value = id;
+                _insertInheritance.Parameters["$baseSymId"].Value = baseId;
+                _insertInheritance.Parameters["$depth"].Value = 1;
+                _insertInheritance.ExecuteNonQuery();
+            }
+        }
+
         return id;
+    }
+
+    private static readonly HashSet<string> ImplicitBaseTypes = new(StringComparer.Ordinal)
+    {
+        // Implicit base classes
+        "Object", "System/Object",
+        "ValueType", "System/ValueType",
+        "Enum", "System/Enum",
+        // Interfaces implicitly implemented by System.Enum / value types
+        "IFormattable", "System/IFormattable",
+        "IComparable", "System/IComparable",
+        "IConvertible", "System/IConvertible",
+        "ISpanFormattable", "System/ISpanFormattable",
+        "IUtf8SpanFormattable", "System/IUtf8SpanFormattable",
+        // Delegate implicit base
+        "Delegate", "System/Delegate",
+        "MulticastDelegate", "System/MulticastDelegate",
+    };
+
+    private static bool IsImplicitBaseType(string symbol)
+    {
+        // SCIP symbols: "scip-dotnet nuget <pkg> <ver> System/Object#"
+        // We match the trailing type descriptor (name + '#') against known implicit bases
+        var hashIdx = symbol.LastIndexOf('#');
+        if (hashIdx <= 0) return false;
+        // Find the start of the type name (after last '/' or last ' ')
+        var nameStart = symbol.LastIndexOfAny(new[] { '/', ' ' }, hashIdx - 1);
+        if (nameStart < 0) return false;
+        var typeName = symbol.Substring(nameStart + 1, hashIdx - nameStart - 1);
+        if (ImplicitBaseTypes.Contains(typeName)) return true;
+        // Also check with namespace prefix: e.g. "System/Object"
+        var nsStart = symbol.LastIndexOf(' ', nameStart - 1);
+        if (nsStart >= 0)
+        {
+            var qualifiedName = symbol.Substring(nsStart + 1, hashIdx - nsStart - 1);
+            if (ImplicitBaseTypes.Contains(qualifiedName)) return true;
+        }
+        return false;
     }
 
     public void WriteDocument(Document doc)
@@ -318,6 +390,8 @@ public sealed class SqliteIndexWriter : IDisposable
             "CREATE INDEX IF NOT EXISTS idx_defn_enclosing_ranges_symbol_id ON defn_enclosing_ranges(symbol_id);" +
             "CREATE INDEX IF NOT EXISTS idx_defn_enclosing_ranges_document ON defn_enclosing_ranges(document_id, start_line, end_line);" +
             "CREATE INDEX IF NOT EXISTS idx_global_symbols_symbol ON global_symbols(symbol);" +
+            "CREATE INDEX IF NOT EXISTS idx_inheritance_symbol ON inheritance_chains(symbol_id);" +
+            "CREATE INDEX IF NOT EXISTS idx_inheritance_base ON inheritance_chains(base_symbol_id);" +
             "CREATE VIRTUAL TABLE IF NOT EXISTS global_symbols_fts USING fts5(symbol, content='global_symbols', content_rowid='id', tokenize='trigram');" +
             "INSERT INTO global_symbols_fts(global_symbols_fts) VALUES('rebuild');";
         cmd.ExecuteNonQuery();
@@ -332,12 +406,12 @@ public sealed class SqliteIndexWriter : IDisposable
         _insertDefnRange.Dispose();
         _lookupSymbol.Dispose();
         _lookupDocument.Dispose();
-        _lookupDocumentHash.Dispose();
         _updateDocumentHash.Dispose();
         _purgeDocMentions.Dispose();
         _purgeDocDefnRanges.Dispose();
         _purgeDocChunks.Dispose();
         _purgeDocument.Dispose();
+        _insertInheritance.Dispose();
         _compressor.Dispose();
         _transaction.Dispose();
         _connection.Dispose();
