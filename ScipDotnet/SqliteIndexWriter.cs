@@ -59,7 +59,7 @@ public sealed class SqliteIndexWriter : IDisposable
         CreateSchema();
         _insertDocument = Prepare("INSERT OR IGNORE INTO documents (language, relative_path) VALUES ($lang, $path);", ("$lang", SqliteType.Text), ("$path", SqliteType.Text));
         _insertChunk = Prepare("INSERT INTO chunks (document_id, chunk_index, start_line, end_line, occurrences) VALUES ($docId, $idx, $start, $end, $occ) RETURNING id;", ("$docId", SqliteType.Integer), ("$idx", SqliteType.Integer), ("$start", SqliteType.Integer), ("$end", SqliteType.Integer), ("$occ", SqliteType.Blob));
-        _insertGlobalSymbol = Prepare("INSERT OR IGNORE INTO global_symbols (symbol, display_name, documentation, relationships) VALUES ($sym, $display, $doc, $rels);", ("$sym", SqliteType.Text), ("$display", SqliteType.Text), ("$doc", SqliteType.Text), ("$rels", SqliteType.Blob));
+        _insertGlobalSymbol = Prepare("INSERT OR IGNORE INTO global_symbols (symbol, display_name, documentation, relationships, source_path) VALUES ($sym, $display, $doc, $rels, $src);", ("$sym", SqliteType.Text), ("$display", SqliteType.Text), ("$doc", SqliteType.Text), ("$rels", SqliteType.Blob), ("$src", SqliteType.Text));
         _insertMention = Prepare("INSERT OR IGNORE INTO mentions (chunk_id, symbol_id, role) VALUES ($chunkId, $symId, $role);", ("$chunkId", SqliteType.Integer), ("$symId", SqliteType.Integer), ("$role", SqliteType.Integer));
         _insertDefnRange = Prepare("INSERT INTO defn_enclosing_ranges (document_id, symbol_id, start_line, start_char, end_line, end_char) VALUES ($docId, $symId, $sl, $sc, $el, $ec);", ("$docId", SqliteType.Integer), ("$symId", SqliteType.Integer), ("$sl", SqliteType.Integer), ("$sc", SqliteType.Integer), ("$el", SqliteType.Integer), ("$ec", SqliteType.Integer));
         _lookupSymbol = Prepare("SELECT id FROM global_symbols WHERE symbol = $sym;", ("$sym", SqliteType.Text));
@@ -88,13 +88,14 @@ public sealed class SqliteIndexWriter : IDisposable
         cmd.CommandText =
             "CREATE TABLE IF NOT EXISTS documents (id INTEGER PRIMARY KEY, language TEXT, relative_path TEXT NOT NULL UNIQUE, position_encoding TEXT, text TEXT, content_hash TEXT);" +
             "CREATE TABLE IF NOT EXISTS chunks (id INTEGER PRIMARY KEY, document_id INTEGER NOT NULL, chunk_index INTEGER NOT NULL, start_line INTEGER NOT NULL, end_line INTEGER NOT NULL, occurrences BLOB NOT NULL, FOREIGN KEY (document_id) REFERENCES documents(id));" +
-            "CREATE TABLE IF NOT EXISTS global_symbols (id INTEGER PRIMARY KEY, symbol TEXT NOT NULL UNIQUE, display_name TEXT, kind INTEGER, documentation TEXT, signature BLOB, enclosing_symbol TEXT, relationships BLOB);" +
+            "CREATE TABLE IF NOT EXISTS global_symbols (id INTEGER PRIMARY KEY, symbol TEXT NOT NULL UNIQUE, display_name TEXT, kind INTEGER, documentation TEXT, signature BLOB, enclosing_symbol TEXT, relationships BLOB, source_path TEXT);" +
             "CREATE TABLE IF NOT EXISTS mentions (chunk_id INTEGER NOT NULL, symbol_id INTEGER NOT NULL, role INTEGER NOT NULL, PRIMARY KEY (chunk_id, symbol_id, role), FOREIGN KEY (chunk_id) REFERENCES chunks(id), FOREIGN KEY (symbol_id) REFERENCES global_symbols(id));" +
             "CREATE TABLE IF NOT EXISTS defn_enclosing_ranges (id INTEGER PRIMARY KEY, document_id INTEGER NOT NULL, symbol_id INTEGER NOT NULL, start_line INTEGER NOT NULL, start_char INTEGER NOT NULL, end_line INTEGER NOT NULL, end_char INTEGER NOT NULL, FOREIGN KEY (document_id) REFERENCES documents(id), FOREIGN KEY (symbol_id) REFERENCES global_symbols(id));" +
             "CREATE TABLE IF NOT EXISTS inheritance_chains (id INTEGER PRIMARY KEY, symbol_id INTEGER NOT NULL, base_symbol_id INTEGER NOT NULL, depth INTEGER NOT NULL DEFAULT 1, FOREIGN KEY (symbol_id) REFERENCES global_symbols(id), FOREIGN KEY (base_symbol_id) REFERENCES global_symbols(id), UNIQUE(symbol_id, base_symbol_id));";
         cmd.ExecuteNonQuery();
         // Migrate: add content_hash column if missing (for existing databases)
         MigrateAddContentHash();
+        MigrateAddSourcePath();
     }
 
     private void MigrateAddContentHash()
@@ -116,6 +117,29 @@ public sealed class SqliteIndexWriter : IDisposable
         {
             using var alter = _connection.CreateCommand();
             alter.CommandText = "ALTER TABLE documents ADD COLUMN content_hash TEXT;";
+            alter.ExecuteNonQuery();
+        }
+    }
+
+    private void MigrateAddSourcePath()
+    {
+        using var cmd = _connection.CreateCommand();
+        cmd.CommandText = "PRAGMA table_info(global_symbols);";
+        using var reader = cmd.ExecuteReader();
+        var hasSourcePath = false;
+        while (reader.Read())
+        {
+            if (string.Equals(reader.GetString(1), "source_path", StringComparison.OrdinalIgnoreCase))
+            {
+                hasSourcePath = true;
+                break;
+            }
+        }
+        reader.Close();
+        if (!hasSourcePath)
+        {
+            using var alter = _connection.CreateCommand();
+            alter.CommandText = "ALTER TABLE global_symbols ADD COLUMN source_path TEXT;";
             alter.ExecuteNonQuery();
         }
     }
@@ -169,6 +193,7 @@ public sealed class SqliteIndexWriter : IDisposable
 
     /// <summary>
     /// Removes documents from the database that are no longer present on disk.
+    /// Skips assembly-indexed documents (prefixed with "assembly:").
     /// </summary>
     public void PurgeDeletedFiles(HashSet<string> currentFiles)
     {
@@ -180,6 +205,9 @@ public sealed class SqliteIndexWriter : IDisposable
             while (reader.Read())
             {
                 var path = reader.GetString(1);
+                // Skip assembly-indexed documents — they are managed by index-assembly
+                if (path.StartsWith("assembly:", StringComparison.Ordinal))
+                    continue;
                 if (!currentFiles.Contains(path))
                     toDelete.Add((reader.GetInt64(0), path));
             }
@@ -212,7 +240,60 @@ public sealed class SqliteIndexWriter : IDisposable
         _contentHashCache[relativePath] = contentHash;
     }
 
-    private long EnsureSymbol(string symbol, SymbolInformation? info = null)
+    /// <summary>
+    /// Writes a collection of SymbolInformation entries directly to the global_symbols table.
+    /// Use this for metadata-only indexing (e.g., DLL assemblies) where there are no source occurrences.
+    /// </summary>
+    public void WriteSymbols(IEnumerable<SymbolInformation> symbols, string? sourcePath = null)
+    {
+        foreach (var sym in symbols)
+        {
+            if (!string.IsNullOrEmpty(sym.Symbol))
+                EnsureSymbol(sym.Symbol, sym, sourcePath);
+        }
+    }
+
+    /// <summary>
+    /// Ensures a document row exists for the given path. Used by assembly indexing to register
+    /// DLL entries in the documents table for incremental hash tracking.
+    /// </summary>
+    public void EnsureDocument(string language, string relativePath)
+    {
+        _insertDocument.Parameters["$lang"].Value = language;
+        _insertDocument.Parameters["$path"].Value = relativePath;
+        _insertDocument.ExecuteNonQuery();
+    }
+
+    /// <summary>
+    /// Purges all symbols (and their inheritance chains) that were indexed from the given source path.
+    /// </summary>
+    public void PurgeSymbolsBySource(string sourcePath)
+    {
+        // Delete inheritance chains referencing symbols from this source
+        using var delInheritance = _connection.CreateCommand();
+        delInheritance.CommandText =
+            "DELETE FROM inheritance_chains WHERE symbol_id IN (SELECT id FROM global_symbols WHERE source_path = $src) " +
+            "OR base_symbol_id IN (SELECT id FROM global_symbols WHERE source_path = $src);";
+        delInheritance.Parameters.AddWithValue("$src", sourcePath);
+        delInheritance.ExecuteNonQuery();
+
+        // Delete the symbols themselves
+        using var delSymbols = _connection.CreateCommand();
+        delSymbols.CommandText = "DELETE FROM global_symbols WHERE source_path = $src;";
+        delSymbols.Parameters.AddWithValue("$src", sourcePath);
+        var deleted = delSymbols.ExecuteNonQuery();
+
+        // Clear from cache
+        var toRemove = _symbolCache.Where(kv =>
+        {
+            // We can't easily check source_path from cache, so just let it be re-populated
+            return false;
+        }).Select(kv => kv.Key).ToList();
+        // Invalidate entire symbol cache since we deleted symbols
+        _symbolCache.Clear();
+    }
+
+    private long EnsureSymbol(string symbol, SymbolInformation? info = null, string? sourcePath = null)
     {
         if (_symbolCache.TryGetValue(symbol, out var cached)) return cached;
         string? displayName = null, documentation = null;
@@ -232,6 +313,7 @@ public sealed class SqliteIndexWriter : IDisposable
         _insertGlobalSymbol.Parameters["$display"].Value = (object?)displayName ?? DBNull.Value;
         _insertGlobalSymbol.Parameters["$doc"].Value = (object?)documentation ?? DBNull.Value;
         _insertGlobalSymbol.Parameters["$rels"].Value = (object?)relsBlob ?? DBNull.Value;
+        _insertGlobalSymbol.Parameters["$src"].Value = (object?)sourcePath ?? DBNull.Value;
         _insertGlobalSymbol.ExecuteNonQuery();
         _lookupSymbol.Parameters["$sym"].Value = symbol;
         var id = (long)_lookupSymbol.ExecuteScalar()!;
@@ -244,7 +326,7 @@ public sealed class SqliteIndexWriter : IDisposable
             {
                 if (!rel.IsImplementation || string.IsNullOrEmpty(rel.Symbol)) continue;
                 if (IsImplicitBaseType(rel.Symbol)) continue;
-                var baseId = EnsureSymbol(rel.Symbol);
+                var baseId = EnsureSymbol(rel.Symbol, sourcePath: sourcePath);
                 _insertInheritance.Parameters["$symId"].Value = id;
                 _insertInheritance.Parameters["$baseSymId"].Value = baseId;
                 _insertInheritance.Parameters["$depth"].Value = 1;

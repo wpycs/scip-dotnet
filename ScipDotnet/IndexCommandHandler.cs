@@ -174,18 +174,14 @@ public static class IndexCommandHandler
                 if (!string.IsNullOrEmpty(document.RelativePath))
                 {
                     allVisitedPaths.Add(document.RelativePath);
-                    // For non-incremental runs, store content hash so subsequent incremental runs
-                    // can detect unchanged files. In incremental mode, UpdateContentHash is already
-                    // called inside IndexDocument after re-indexing.
-                    if (!isIncremental)
+                    // Store content hash for all runs so subsequent incremental runs
+                    // can detect unchanged files.
+                    var fullPath = Path.Combine(options.WorkingDirectory.FullName, document.RelativePath);
+                    if (File.Exists(fullPath))
                     {
-                        var fullPath = Path.Combine(options.WorkingDirectory.FullName, document.RelativePath);
-                        if (File.Exists(fullPath))
-                        {
-                            var content = await File.ReadAllTextAsync(fullPath, cancellationToken);
-                            var hash = ComputeContentHash(content);
-                            writer.UpdateContentHash(document.RelativePath, hash);
-                        }
+                        var content = await File.ReadAllTextAsync(fullPath, cancellationToken);
+                        var hash = ComputeContentHash(content);
+                        writer.UpdateContentHash(document.RelativePath, hash);
                     }
                 }
                 documentCount++;

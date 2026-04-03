@@ -55,11 +55,35 @@ public static class Program
                 "Enable incremental indexing for SQLite output. Only re-indexes files whose content has changed since the last run."),
         };
         indexCommand.Handler = CommandHandler.Create(IndexCommandHandler.Process);
+
+        var indexAssemblyCommand = new Command("index-assembly", "Index DLL assemblies to extract symbol information")
+        {
+            new Argument<List<FileInfo>>("dll-paths", "Paths to DLL files to index")
+                { Arity = ArgumentArity.ZeroOrMore },
+            new Option<string>("--output", () => "index.scip",
+                "Path to the output file"),
+            new Option<string>("--output-format", () => "scip",
+                "Output format: 'scip' for protobuf SCIP file, 'sqlite' for SQLite database"),
+            new Option<List<string>>("--search-paths", () => new List<string>(),
+                "Additional directories to search for dependency assemblies")
+            {
+                Arity = ArgumentArity.ZeroOrMore
+            },
+            new Option<bool>("--include-non-public", () => false,
+                "Include non-public (internal/private) members in the index"),
+            new Option<FileInfo?>("--directory", () => null,
+                "Directory to scan for all DLL files (recursive). Can be combined with explicit dll-paths."),
+            new Option<bool>("--incremental", () => false,
+                "Enable incremental indexing for SQLite output. Only re-indexes DLLs whose content has changed."),
+        };
+        indexAssemblyCommand.Handler = CommandHandler.Create(IndexAssemblyCommandHandler.Process);
+
         var rootCommand =
             new RootCommand(
                 "SCIP indexer for the C# and Visual basic programming languages. Built with the Roslyn .NET compiler. Supports MSBuild.")
             {
                 indexCommand,
+                indexAssemblyCommand,
             };
         var builder = new CommandLineBuilder(rootCommand);
         return await builder.UseHost(_ => Host.CreateDefaultBuilder(), host =>
