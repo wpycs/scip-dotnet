@@ -18,11 +18,15 @@ public static class IndexAssemblyCommandHandler
         string outputFormat,
         List<string> searchPaths,
         bool includeNonPublic,
-        FileInfo? directory,
-        bool incremental)
+        DirectoryInfo? directory,
+        bool incremental,
+        string pathPrefix)
     {
         var logger = host.Services.GetRequiredService<ILogger<IndexCommandOptions>>();
         var stopwatch = Stopwatch.StartNew();
+
+        // Normalize: trim trailing slashes, use forward slash
+        var normalizedPrefix = pathPrefix.Trim().TrimEnd('/', '\\').Replace('\\', '/');
 
         var paths = dllPaths.Select(f => f.FullName).ToList();
 
@@ -59,11 +63,11 @@ public static class IndexAssemblyCommandHandler
                 ? outputFile
                 : new FileInfo(Path.ChangeExtension(outputFile.FullName, ".db"));
 
-            WriteSqlite(dbPath, paths, searchPaths, includeNonPublic, incremental, logger);
+            WriteSqlite(dbPath, paths, searchPaths, includeNonPublic, incremental, normalizedPrefix, logger);
         }
         else
         {
-            WriteScip(outputFile, paths, searchPaths, includeNonPublic, logger);
+            WriteScip(outputFile, paths, searchPaths, includeNonPublic, normalizedPrefix, logger);
         }
 
         logger.LogInformation("done: {Output} ({Elapsed})", outputFile, stopwatch.Elapsed.ToFriendlyString());
@@ -71,7 +75,7 @@ public static class IndexAssemblyCommandHandler
     }
 
     private static void WriteScip(FileInfo outputFile, List<string> dllPaths,
-        List<string> searchPaths, bool includeNonPublic, ILogger logger)
+        List<string> searchPaths, bool includeNonPublic, string pathPrefix, ILogger logger)
     {
         var indexer = new ScipAssemblyIndexer(logger);
         var compilation = indexer.CreateCompilation(dllPaths, searchPaths);
@@ -106,7 +110,7 @@ public static class IndexAssemblyCommandHandler
     }
 
     private static void WriteSqlite(FileInfo dbPath, List<string> dllPaths,
-        List<string> searchPaths, bool includeNonPublic, bool incremental, ILogger logger)
+        List<string> searchPaths, bool includeNonPublic, bool incremental, string pathPrefix, ILogger logger)
     {
         var isIncremental = incremental && File.Exists(dbPath.FullName);
         if (!isIncremental && File.Exists(dbPath.FullName))
@@ -129,8 +133,11 @@ public static class IndexAssemblyCommandHandler
             var fullPath = Path.GetFullPath(dllPath);
             var fileHash = ComputeFileHash(fullPath);
 
-            // Use DLL path as the document key for incremental tracking
-            var docKey = "assembly:" + fullPath;
+            // Build document key: {prefix}/{filename} or just {filename} if no prefix
+            var fileName = Path.GetFileName(fullPath);
+            var docKey = string.IsNullOrEmpty(pathPrefix)
+                ? "assembly:" + fileName
+                : "assembly:" + pathPrefix + "/" + fileName;
 
             if (isIncremental && !writer.ShouldReindex(docKey, fileHash))
             {

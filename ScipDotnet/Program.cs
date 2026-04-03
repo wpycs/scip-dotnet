@@ -71,10 +71,12 @@ public static class Program
             },
             new Option<bool>("--include-non-public", () => false,
                 "Include non-public (internal/private) members in the index"),
-            new Option<FileInfo?>("--directory", () => null,
+            new Option<DirectoryInfo?>("--directory", () => null,
                 "Directory to scan for all DLL files (recursive). Can be combined with explicit dll-paths."),
             new Option<bool>("--incremental", () => false,
                 "Enable incremental indexing for SQLite output. Only re-indexes DLLs whose content has changed."),
+            new Option<string>("--path-prefix", () => "",
+                "Virtual path prefix for DLL entries. DLL file names will be stored as 'assembly:{prefix}/{filename}' in the database."),
         };
         indexAssemblyCommand.Handler = CommandHandler.Create(IndexAssemblyCommandHandler.Process);
 
